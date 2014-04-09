@@ -14,16 +14,23 @@
         <nav>
             <ul>
                 <li><a href="/">Home Page</a></li>
-                <li><a href="/people">People</a></li>
-                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                <li><a href="{% url 'settings' %}">Settings</a></li>
+                <li><a href="/">Logout</a></li>
             </ul>
         </nav>
     </header>
+
     {% cms "first.txt" %}
     <section role="main">
         {% block body %}{% endblock %}
     </section>
 
+    <form action="/login" method="post">
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <form action="/logout" method="post">
+        <button type="submit" class="btn btn-primary">Logout</button>
+    </form>
+    Authenticated: {% if req.isAuthenticated === true %}true{% else %}false{%endif%}
+{{session}}
 </body>
 </html>
