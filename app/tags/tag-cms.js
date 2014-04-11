@@ -18,7 +18,7 @@ exports.parse = function (str, line, parser, types, options) {
 exports.compile = function (compiler, args, content, parents, options, blockName) {
   console.log('test');
   var fileId = args[0].replace(/\'/g, "").replace(/\"/g, "");
-  return '_output += "' + fs.readFileSync('./app/content/' + fileId) + '";';
+  return '_output += _ext.admin() + "' + fs.readFileSync('./app/content/' + fileId) + '";';
 };
 
 exports.ends = false;

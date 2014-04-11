@@ -30,7 +30,8 @@
     <form action="/logout" method="post">
         <button type="submit" class="btn btn-primary">Logout</button>
     </form>
-    Authenticated: {% if req.isAuthenticated === true %}true{% else %}false{%endif%}
+
+    Authenticated: {% if res.req.isAuthenticated %}true{% else %}false{%endif%}
 {{session}}
 </body>
 </html>

@@ -28,11 +28,8 @@ app.set('views', __dirname + '/app/views');
 
 app.configure(function() {
     app.use(express.cookieParser());
+    app.use(express.bodyParser());
     app.use(express.session({ secret: 'keyboard cat' }));
-
-
-
-
 });
 
 swig.setExtension('url', function (urlname) {
@@ -45,15 +42,27 @@ swig.setExtension('url', function (urlname) {
 
 swig.setTag('url', urltag.parse, urltag.compile, urltag.ends, urltag.blockLevel);
 
+var isAdmin = false;
+swig.setExtension('admin', function () {
+    if(isAdmin)
+        return 'yeah admin';
+    else
+        return 'dupa';
+});
+
 swig.setTag('cms', cmstag.parse, cmstag.compile, cmstag.ends, cmstag.blockLevel);
 
-
 app.use(function(req, res, next){
-    if(req.session.isAuthenticated)
+    if(req.session.isAuthenticated) {
         req.isAuthenticated = true;
-    else
+        isAdmin = true;
+    }
+    else {
         req.isAuthenticated = false;
-    next()
+        isAdmin = false;
+    }
+
+    next();
 });
 
 /* swig-cms routes */
@@ -62,8 +71,6 @@ app.get('/refresh', function(req, res) {
   swig.invalidateCache();
   res.end();
 });
-
-
 
 /* app routes */
 
@@ -84,8 +91,6 @@ app.post('/logout', function(req, res) {
 app.get('/*', function (req, res) {
   res.render(req.params[0], {});
 });
-
-
 
 app.listen(1337);
 console.log('Application Started on http://localhost:1337/');
