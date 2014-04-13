@@ -23,3 +23,21 @@ exports.compile = function (compiler, args, content, parents, options, blockName
 
 exports.ends = false;
 exports.blockLevel = false;
+
+
+//Express Middleware
+var isAdmin = false;
+
+exports.authenicate = function (req, res, next) {
+  sessionId = req.session.id;
+  if(req.session.isAuthenticated) {
+    req.isAuthenticated = true;
+    isAdmin = true;
+  }
+  else {
+    req.isAuthenticated = false;
+    isAdmin = false;
+  }
+
+  next();
+}

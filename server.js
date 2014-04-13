@@ -1,6 +1,7 @@
 var express = require('express');
 var swig = require('swig');
 var http = require('http');
+var path = require('path');
 var app = express();
 var urltag = require('./app/tags/tag-url');
 var people = [
@@ -32,6 +33,8 @@ app.configure(function() {
     app.use(express.session({ secret: 'keyboard cat' }));
 });
 
+app.use(express.favicon(path.normalize(__dirname + '/public/img/favicon.png')));
+
 swig.setExtension('url', function (urlname) {
   var urls = {
     dashboard: 'dashboard',
@@ -43,16 +46,23 @@ swig.setExtension('url', function (urlname) {
 swig.setTag('url', urltag.parse, urltag.compile, urltag.ends, urltag.blockLevel);
 
 var isAdmin = false;
+var sessionId = '';
+
 swig.setExtension('admin', function () {
     if(isAdmin)
-        return 'yeah admin';
+        return 'yeah admin - ' + sessionId + ' - ';
     else
-        return 'dupa';
+        return 'dupa - ' + sessionId + ' - ';
 });
 
 swig.setTag('cms', cmstag.parse, cmstag.compile, cmstag.ends, cmstag.blockLevel);
 
+//Set extensions and tag here.
+//cmstag.configure(swig);
+
+
 app.use(function(req, res, next){
+    sessionId = req.session.id;
     if(req.session.isAuthenticated) {
         req.isAuthenticated = true;
         isAdmin = true;
@@ -81,7 +91,7 @@ app.get('/', function (req, res) {
 app.post('/login', function(req, res) {
     req.session.isAuthenticated = true;
     res.redirect('/');
- });
+});
 
 app.post('/logout', function(req, res) {
     req.session.isAuthenticated = false;
