@@ -3,14 +3,10 @@ var swig = require('swig');
 var http = require('http');
 var path = require('path');
 var app = express();
-var urltag = require('./app/tags/tag-url');
-var people = [
-    { name: 'Paul', age: 28 },
-    { name: 'Jane', age: 26 },
-    { name: 'Jimmy', age: 45 }
-  ];
 var cmstag = require('./app/tags/tag-cms');
 var passport = require('passport');
+
+app.use(express.favicon());
 
 
 // bootstrap passport config
@@ -33,54 +29,16 @@ app.configure(function() {
     app.use(express.session({ secret: 'keyboard cat' }));
 });
 
-app.use(express.favicon(path.normalize(__dirname + '/public/img/favicon.png')));
-
-swig.setExtension('url', function (urlname) {
-  var urls = {
-    dashboard: 'dashboard',
-    settings: 'settings'
-  };
-  return urls[urlname];
-});
-
-swig.setTag('url', urltag.parse, urltag.compile, urltag.ends, urltag.blockLevel);
-
-var isAdmin = false;
-var sessionId = '';
-
-swig.setExtension('admin', function () {
-    if(isAdmin)
-        return 'yeah admin - ' + sessionId + ' - ';
-    else
-        return 'dupa - ' + sessionId + ' - ';
-});
-
-swig.setTag('cms', cmstag.parse, cmstag.compile, cmstag.ends, cmstag.blockLevel);
-
-//Set extensions and tag here.
-//cmstag.configure(swig);
 
 
+//this needs to be before configure? Why?
 app.use(function(req, res, next){
-    sessionId = req.session.id;
-    if(req.session.isAuthenticated) {
-        req.isAuthenticated = true;
-        isAdmin = true;
-    }
-    else {
-        req.isAuthenticated = false;
-        isAdmin = false;
-    }
-
+    if(req)
+        cmstag.isAdmin(req.session && req.session.isAuthenticated);
     next();
 });
 
-/* swig-cms routes */
-
-app.get('/refresh', function(req, res) {
-  swig.invalidateCache();
-  res.end();
-});
+cmstag.configure(swig, app);
 
 /* app routes */
 
