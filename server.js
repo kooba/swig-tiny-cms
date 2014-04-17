@@ -5,9 +5,7 @@ var path = require('path');
 var app = express();
 var swigCms = require('./app/tags/tag-cms');
 
-
 app.use(express.favicon());
-
 app.use(express.cookieParser());
 app.use(express.bodyParser());
 app.use(express.session({ secret: 'keyboard cat' }));
@@ -20,8 +18,10 @@ app.set('views', __dirname + '/app/views');
 // app.set('view cache', false);
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-//this needs to be before configure? Why?
+/*
+    Provide a way for swigCms to know when user is authorized to edit content.
+ */
+//TODO:this needs to be before configure? Why?
 app.use(function(req, res, next){
     if(req)
         swigCms.isAdmin(req.session && req.session.isAuthenticated);
