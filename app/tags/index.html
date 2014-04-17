@@ -5,9 +5,10 @@
     <title>Eidt {{ contentId }}</title>
 </head>
 <body>
-<form action='/express-cms/save/' method='post'>
-<input type='hidden' name='contentId' value='{{ contentId }}' />
-<textarea rows='40' cols='50' name='content' id='content'>
+<form action="/express-cms/save/" method="post">
+<input type="hidden" name="contentId" value="{{ contentId }}" />
+<input type="hidden" name="returnUrl" value="{{ returnUrl }}" />
+<textarea rows="40" cols="50" name="content" id="content">
 {{ content }}
 </textarea>
 <button type='submit'>Save</button>

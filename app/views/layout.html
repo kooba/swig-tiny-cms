@@ -5,6 +5,17 @@
     <title>{% block title %}{% endblock %} - Example</title>
 </head>
 <body>
+    <header>
+        <h1>{% block title %}{% endblock %}</h1>
+        {% block header %}{% endblock %}
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <section role="main">
         {% block body %}{% endblock %}
     </section>

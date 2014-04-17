@@ -4,6 +4,8 @@ var http = require('http');
 var path = require('path');
 var app = express();
 var swigCms = require('./app/tags/tag-cms');
+var fs = require('fs');
+var markdown = require('markdown').markdown;
 
 app.use(express.favicon());
 app.use(express.cookieParser());
@@ -35,7 +37,15 @@ swigCms.configure(swig, app, swigCmsOptions);
 /* app routes */
 
 app.get('/', function (req, res) {
-  res.render('index', {});
+
+  var text = fs.readFileSync('./app/content/first.txt').toString();
+  res.render('index', {
+    md: markdown.toHTML(text)
+  });
+});
+
+app.get('/about', function (req, res) {
+    res.render('about', {});
 });
 
 app.post('/login', function(req, res) {
