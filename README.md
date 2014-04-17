@@ -9,5 +9,27 @@ Minimum configuration required:
 
 
 ```
-app.use(swigcms.authenticate());
+var cmstag = require('./app/tags/tag-cms');
+
+app.use(function(req, res, next){
+    if(req)
+        cmstag.isAdmin(req.session && req.session.isAuthenticated);
+    next();
+});
+
+cmstag.configure(swig, app);
 ```
+
+Live Preview
+========
+
+To enable live preview during editing install markdown with bower
+```
+bower install markdown --save
+```
+
+Provide bower component root folder within swig-cms options:
+
+var options = { bowerComponents: "public/components" }
+
+cmstag.configure(swig, app, options);

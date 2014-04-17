@@ -7,10 +7,23 @@
 <body>
 <form action='/express-cms/save/' method='post'>
 <input type='hidden' name='contentId' value='{{ contentId }}' />
-<textarea rows='40' cols='50' name='content'>
+<textarea rows='40' cols='50' name='content' id='content'>
 {{ content }}
 </textarea>
 <button type='submit'>Save</button>
 </form>
+<div id="preview"> </div>
+<script src="{{ markdownjs }}"></script>
+<script>
+    function Editor(input, preview) {
+        this.update = function () {
+            preview.innerHTML = markdown.toHTML(input.value);
+        };
+        input.editor = this;
+        this.update();
+    }
+    var $ = function (id) { return document.getElementById(id); };
+    new Editor($("content"), $("preview"));
+</script>
 </body>
 </html>

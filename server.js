@@ -3,30 +3,34 @@ var swig = require('swig');
 var http = require('http');
 var path = require('path');
 var app = express();
-var cmstag = require('./app/tags/tag-cms');
+var swigCms = require('./app/tags/tag-cms');
 
 
 app.use(express.favicon());
+
 app.use(express.cookieParser());
 app.use(express.bodyParser());
 app.use(express.session({ secret: 'keyboard cat' }));
+
 
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/app/views');
 // Optional: use swig's caching methods
 // app.set('view cache', false);
-
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 //this needs to be before configure? Why?
 app.use(function(req, res, next){
     if(req)
-        cmstag.isAdmin(req.session && req.session.isAuthenticated);
+        swigCms.isAdmin(req.session && req.session.isAuthenticated);
     next();
 });
 
-cmstag.configure(swig, app);
+var swigCmsOptions = { bowerComponents: "/components" };
+
+swigCms.configure(swig, app, swigCmsOptions);
 
 /* app routes */
 

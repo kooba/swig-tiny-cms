@@ -4,7 +4,6 @@ exports.parse = function (str, line, parser, types, options) {
      return true;
 };
 
-//Load file from disk and set it here.
 exports.compile = function (compiler, args, content, parents, options, blockName) {
     var fileId = args[0].replace(/\'/g, "").replace(/\"/g, "");
     var cont = [];
@@ -29,10 +28,13 @@ exports.isAdmin = function (isAdmin) {
 
 var preContent = '';
 var postContent = '';
+var bowerPath = ''
 
+exports.configure = function(swig, app, options) {
 
-exports.configure = function(swig, app) {
+    bowerPath = options.bowerComponents;
     //This needs to be super light since it will be called on every request.
+
     swig.setExtension('preContent', function () {
         if(admin)
             return preContent;
@@ -53,7 +55,7 @@ exports.configure = function(swig, app) {
 
     swig.setTag('cms', this.parse, this.compile, this.ends, this.blockLevel);
 
-    //Make beginning of route configurable
+    //TODO: Make beginning of route configurable
     app.post('/express-cms/save', function(req, res) {
         var content = req.body.content;
         var contentId = req.body.contentId;
@@ -65,7 +67,8 @@ exports.configure = function(swig, app) {
     app.get('/express-cms/edit/:contentId', function(req, res) {
         res.render(__dirname + '/index', {
             contentId: req.params.contentId,
-            content: fs.readFileSync('./app/content/' + req.params.contentId).toString()
+            content: fs.readFileSync('./app/content/' + req.params.contentId).toString(),
+            markdownjs: bowerPath + '/markdown/lib/markdown.js'
         });
     });
 }
