@@ -3,11 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <title>{% block title %}{% endblock %} - Example</title>
-
-
 </head>
 <body>
-
     <header>
         <h1>{% block title %}{% endblock %}</h1>
         {% block header %}{% endblock %}
@@ -19,18 +16,9 @@
         </nav>
     </header>
 
-
-    {% cms 'first.txt' %}
-
-
-
-    {% markdown %}
-    # This is an H1
-    # something else
-    {% endmarkdown %}
-
     <section role="main">
         {% block body %}{% endblock %}
+        {% cms 'first.txt' %}
     </section>
 
     <form action="/login" method="post">
@@ -40,7 +28,5 @@
         <button type="submit" class="btn btn-primary">Logout</button>
     </form>
 
-
-{{session}}
 </body>
 </html>

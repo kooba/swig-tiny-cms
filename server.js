@@ -4,17 +4,10 @@ var http = require('http');
 var path = require('path');
 var app = express();
 var cmstag = require('./app/tags/tag-cms');
-var passport = require('passport');
-var extras = require('swig-extras');
-extras.useTag(swig, 'markdown');
-var markdown = require('markdown').markdown;
-var fs = require('fs');
-
-app.use(express.favicon( __dirname + '/public/img/favicon.png'));
 
 
-// bootstrap passport config
-require('./app/config/passport')(passport)
+app.use(express.favicon());
+
 
 // NOTE: It is preferred to use consolidate.js
 // However, we can't do that in this example, because the example uses
@@ -47,12 +40,7 @@ cmstag.configure(swig, app);
 /* app routes */
 
 app.get('/', function (req, res) {
-  var text = fs.readFileSync('./app/content/first.txt');
-  var mark = markdown.toHTML(text.toString());
-
-  res.render('index', {
-    md: mark
-  });
+  res.render('index', {});
 });
 
 app.post('/login', function(req, res) {

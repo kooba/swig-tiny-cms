@@ -2,42 +2,25 @@ var fs = require('fs');
 var markdown = require('markdown').markdown;
 
 exports.parse = function (str, line, parser, types, options) {
-//  var matched = false;
-//  parser.on('*', function (token) {
-//    console.log(token);
-//    if (matched) {
-//      throw new Error('Unexpected token ' + token.match + '.');
-//    }
-//    matched = true;
-//    return true;
-//  });
-
-  return true;
+     return true;
 };
-
 
 //Load file from disk and set it here.
 exports.compile = function (compiler, args, content, parents, options, blockName) {
-  var fileId = args[0].replace(/\'/g, "").replace(/\"/g, "");
-  //return '_output += _ext.preContent() + "' + fs.readFileSync('./app/content/' + fileId) + '" + _ext.postContent("' + fileId + '");';
-  var file = fs.readFileSync('./app/content/' + fileId).toString();
-  var md = markdown.toHTML(file);
-
-
-  console.log(md);
-//  var file = "# test 1 \n"
-//  + "#test 2"
-  //return compiler(md, parents, options, blockName);
-  return '_output += _ext.preContent() + "' + md + '" + _ext.postContent("' + fileId + '");';
+    var fileId = args[0].replace(/\'/g, "").replace(/\"/g, "");
+    var cont = [];
+    cont.push(fs.readFileSync('./app/content/' + fileId).toString());
+    return '(function () {\n' +
+        '  var __o = _output;\n' +
+        '  _output = "";\n' +
+        compiler(cont, parents, options, blockName) + ';\n' +
+        '  __o += _ext.preContent() + _ext.convertToHtml(_output) + _ext.postContent("' + fileId + '")  ;\n' +
+        '  _output = __o;\n' +
+        '})();\n';
 };
 
 exports.ends = false;
 exports.blockLevel = false;
-
-exports.ext = {
-  name: 'markdown',
-  obj: require('markdown').markdown
-};
 
 var admin = false;
 
@@ -65,6 +48,10 @@ exports.configure = function(swig, app) {
             return '';
     });
 
+    swig.setExtension('convertToHtml', function (content) {
+       return require('markdown').markdown.toHTML(content);
+    });
+
     swig.setTag('cms', this.parse, this.compile, this.ends, this.blockLevel);
 
     //Make beginning of route configurable
@@ -81,7 +68,7 @@ exports.configure = function(swig, app) {
             + "<form action='/express-cms/save/' method='post'>"
             + "<input type='hidden' name='contentId' value='" + req.params.contentId + "' />"
             + "<textarea rows='4' cols='50' name='content'>"
-            + fs.readFileSync('./app/content/' + req.params.contentId)
+            + fs.readFileSync('./app/content/' + req.params.contentId).toString()
             + "</textarea>"
             + "<button type='submit'>Save</button>"
             + "</form>";
