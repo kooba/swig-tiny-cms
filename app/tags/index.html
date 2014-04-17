@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Eidt {{ contentId }}</title>
+</head>
+<body>
+<form action='/express-cms/save/' method='post'>
+<input type='hidden' name='contentId' value='{{ contentId }}' />
+<textarea rows='40' cols='50' name='content'>
+{{ content }}
+</textarea>
+<button type='submit'>Save</button>
+</form>
+</body>
+</html>

@@ -1,5 +1,4 @@
 var fs = require('fs');
-var markdown = require('markdown').markdown;
 
 exports.parse = function (str, line, parser, types, options) {
      return true;
@@ -64,14 +63,9 @@ exports.configure = function(swig, app) {
     });
 
     app.get('/express-cms/edit/:contentId', function(req, res) {
-        var edit = "I will be editing content here: </br>"
-            + "<form action='/express-cms/save/' method='post'>"
-            + "<input type='hidden' name='contentId' value='" + req.params.contentId + "' />"
-            + "<textarea rows='4' cols='50' name='content'>"
-            + fs.readFileSync('./app/content/' + req.params.contentId).toString()
-            + "</textarea>"
-            + "<button type='submit'>Save</button>"
-            + "</form>";
-        res.send(edit);
+        res.render(__dirname + '/index', {
+            contentId: req.params.contentId,
+            content: fs.readFileSync('./app/content/' + req.params.contentId).toString()
+        });
     });
 }

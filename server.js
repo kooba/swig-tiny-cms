@@ -7,24 +7,15 @@ var cmstag = require('./app/tags/tag-cms');
 
 
 app.use(express.favicon());
-
-
-// NOTE: It is preferred to use consolidate.js
-// However, we can't do that in this example, because the example uses
-// The uninstalled version of swig for testing purposes
-// Please see the documentation for proper use with Express
+app.use(express.cookieParser());
+app.use(express.bodyParser());
+app.use(express.session({ secret: 'keyboard cat' }));
 
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/app/views');
 // Optional: use swig's caching methods
 // app.set('view cache', false);
-
-app.configure(function() {
-    app.use(express.cookieParser());
-    app.use(express.bodyParser());
-    app.use(express.session({ secret: 'keyboard cat' }));
-});
 
 
 

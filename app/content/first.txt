@@ -8,4 +8,6 @@ Minimum configuration required:
 
   - Type some Markdown text in the left window
   - See the HTML in the right
-  - Magic
+  - Magic 4444
+`<textarea rows='77' cols='50' name='content'></textarea>`
+
