@@ -5,8 +5,12 @@ var path = require('path');
 var app = express();
 var cmstag = require('./app/tags/tag-cms');
 var passport = require('passport');
+var extras = require('swig-extras');
+extras.useTag(swig, 'markdown');
+var markdown = require('markdown').markdown;
+var fs = require('fs');
 
-app.use(express.favicon());
+app.use(express.favicon( __dirname + '/public/img/favicon.png'));
 
 
 // bootstrap passport config
@@ -43,7 +47,12 @@ cmstag.configure(swig, app);
 /* app routes */
 
 app.get('/', function (req, res) {
-  res.render('index', {});
+  var text = fs.readFileSync('./app/content/first.txt');
+  var mark = markdown.toHTML(text.toString());
+
+  res.render('index', {
+    md: mark
+  });
 });
 
 app.post('/login', function(req, res) {

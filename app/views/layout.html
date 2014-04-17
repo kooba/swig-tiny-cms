@@ -19,7 +19,16 @@
         </nav>
     </header>
 
-    {% cms "first.txt" %}
+
+    {% cms 'first.txt' %}
+
+
+
+    {% markdown %}
+    # This is an H1
+    # something else
+    {% endmarkdown %}
+
     <section role="main">
         {% block body %}{% endblock %}
     </section>
