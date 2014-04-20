@@ -1,11 +1,9 @@
 Swig CMS
 ========
 
-Add basic content management capability to your existing Express.js + SWIG applications.
+Adds basic content management capability to your existing Express.js + Swig applications.
 
-Support for Markdown or HTML content sections with Mongodb or file-based persistance.
-
-Minimum configuration required:
+Support for Markdown content sections with file-based persistence.
 
 Install Swig CMS:
 
@@ -20,27 +18,39 @@ bower install marked --save
 ```
 
 #Usage:
+
+
+
 ```js
+var swig = require('swig');
 var swigCms = require('swig-cms');
 
+/*
+ * Normal Express and Swig configuration goes here...
+ */
+
+// Express and Swig configuration
+
+/**
+ * Provide a way for Swig CMS to know when user is authorized to edit content via middleware.
+ */
 app.use(function(req, res, next){
-        swigCms.isAdmin(req.isAuthenticated());
-    next();
+  swigCms.isAdmin(req.isAuthenticated());
+  next();
 });
 
-swigCms.configure(swig, app);
-```
-
-#Live Preview
-
-To enable live preview during editing install markdown with bower
-```
-bower install markdown --save
+/**
+ * Initialize Swig CMS
+ */
+swigCms.initialize(swig, app);
 ```
 
 Provide bower component root folder within swig-cms options:
 
 ```js
-var options = { bowerComponents: "public/components" }
-cmstag.configure(swig, app, options);
+var options = {
+  bowerComponentsPath: '/components'
+};
+
+swigCms.initialize(swig, app, options);
 ````
