@@ -5,7 +5,7 @@ Adds basic content management capability to your existing Express.js + Swig appl
 
 - Support for Markdown content sections.
 - File-based persistence.
-- Works on node clusters.
+- Works on Node.js clusters.
 
 Install Swig CMS:
 
