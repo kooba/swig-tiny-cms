@@ -6,6 +6,12 @@ var app = express();
 var swigCms = require('./app/tags/tag-cms');
 var fs = require('fs');
 var markdown = require('markdown').markdown;
+var marked = require('marked');
+
+var extensions = require('swig-extensions');
+//var mySwig = new swig.Swig();
+
+extensions.useTag(swig, 'markdown');
 
 app.use(express.favicon());
 app.use(express.cookieParser());
@@ -16,6 +22,7 @@ app.use(express.session({ secret: 'keyboard cat' }));
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/app/views');
+//app.use(require('connect-livereload')());
 // Optional: use swig's caching methods
 // app.set('view cache', false);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -23,6 +30,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 /*
     Provide a way for swigCms to know when user is authorized to edit content.
  */
+
+
 //TODO:this needs to be before configure? Why?
 app.use(function(req, res, next){
     if(req)
@@ -30,7 +39,14 @@ app.use(function(req, res, next){
     next();
 });
 
-var swigCmsOptions = { bowerComponents: "/components" };
+/**
+ * Set swig-cms options here.
+ *
+ */
+
+var swigCmsOptions = {
+  bowerComponents: "/components"
+};
 
 swigCms.configure(swig, app, swigCmsOptions);
 
@@ -40,7 +56,8 @@ app.get('/', function (req, res) {
 
   var text = fs.readFileSync('./app/content/first.txt').toString();
   res.render('index', {
-    md: markdown.toHTML(text)
+    md: markdown.toHTML(text),
+    marked: marked(text)
   });
 });
 

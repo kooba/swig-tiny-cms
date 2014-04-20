@@ -1,4 +1,5 @@
-#swig-cms
+swig-cms
+========
 
 Add basic content management  
 capability to your existing Express.js + SWIG applications.
@@ -11,28 +12,15 @@ Minimum configuration required:
   - See the HTML in the right
   - Magic 4444 
  
-`<textarea rows='77' cols='50' name='content'></textarea>`
+```html  
+<textarea rows='77' cols='50' name='content'>
+</textarea>```
 
-fasfdsaf
+```sh
+git clone [git-repo-url] dillinger
+cd dillinger
+npm i -d
+mkdir -p public/files/{md,html,pdf}
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Ok this is magic after all! 121212

@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
-
 {% block title %}Home Page{% endblock %}
 {% block body %}
 {% cms 'first.txt' %}
-        {{ md|safe }}
+{% cms 'second.txt' %}
+<hr/>
 {% endblock %}

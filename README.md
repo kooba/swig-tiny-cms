@@ -7,8 +7,20 @@ Support for Markdown or HTML content sections with Mongodb or file-based persist
 
 Minimum configuration required:
 
+Install Swig CMS:
 
+```sh
+npm install swig-cms --save
 ```
+
+Marked is used on the client side for live preview.
+
+```sh
+bower install marked --save
+```
+
+#Usage:
+```js
 var cmstag = require('./app/tags/tag-cms');
 
 app.use(function(req, res, next){
