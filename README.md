@@ -3,7 +3,9 @@ Swig CMS
 
 Adds basic content management capability to your existing Express.js + Swig applications.
 
-Support for Markdown content sections with file-based persistence.
+- Support for Markdown content sections.
+- File-based persistence.
+- Works on node clusters.
 
 Install Swig CMS:
 
@@ -47,3 +49,4 @@ Initialize Swig CMS
 ```js
 swigCms.initialize(swig, app, options);
 ````
+

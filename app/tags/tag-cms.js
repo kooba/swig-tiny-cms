@@ -45,7 +45,7 @@ exports.compile = function (compiler, args, content, parents, options, blockName
     '  var __o = _output;\n' +
     '  _output = "";\n' +
     compiler(content, parents, options, blockName) + ';\n' +
-    '  __o += _ext.preContent() + _ext.convertToHtml(_output) + _ext.postContent("' + fileId + '")  ;\n' +
+    '  __o += _ext.preContent("' + fileId + '") + _ext.convertToHtml(_output) + _ext.postContent("' + fileId + '")  ;\n' +
     '  _output = __o;\n' +
     '})();\n';
 };
@@ -86,16 +86,16 @@ exports.initialize = function (swig, app, options) {
     next();
   });
 
-  swig.setExtension('preContent', function () {
+  swig.setExtension('preContent', function (fileId) {
     if (admin)
-      return preContent;
+      return preContent + "<a href=/" + options.route + "/edit/" + fileId + "?refUrl=" + request.url + ">Edit</a><div>";
     else
       return preContent;
   });
 
-  swig.setExtension('postContent', function (fieldId) {
+  swig.setExtension('postContent', function (fileId) {
     if (admin)
-      return postContent + "<br/><a href=/" + options.route + "/edit/" + fieldId + "?refUrl=" + request.url + ">Edit</a>";
+      return postContent + "</div>";
     else
       return preContent;
   });
