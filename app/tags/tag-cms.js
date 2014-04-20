@@ -22,9 +22,9 @@ exports.blockLevel = false;
  * Custom Swig compilation:
  * 1. Strip incoming file (args[0]) from additional quotations.
  * 2. Grab existing content file if exists.
- * 3. Replace extra \r characters:
- *      Swig stuffs more \n characters in their place and in turn
- *      they are converted into additional break <br/> tags by Marked.
+ * 3. Replace extra \r characters.
+ *      This is a hack to avoid Swig stuffing more \n characters in place of \r.
+ *      They are converted into additional break <br/> tags by Marked.
  * 4. Swig compilation
  * 5. Add pre and post content HTML based on permissions for editing.
  * More info about Swig compilation here: //TODO:Swig compilation docs
@@ -54,6 +54,7 @@ exports.compile = function (compiler, args, content, parents, options, blockName
  * Hook into Swig CMS to allow for authorized users to edit content.
  * @param bool isAdmin
  */
+
 exports.isAdmin = function (isAdmin) {
   admin = isAdmin;
 };
@@ -67,10 +68,12 @@ exports.isAdmin = function (isAdmin) {
  * @options example
  * var options =  {
  *  route: 'express-cms', // Route used by Swig CMS internally. Optional, defaults to 'express-cms'
- *  bowerComponents: '/components'
+ *  bowerComponentsPath: '/components', // Path to Bower components to locate Marked js
+ *
+ *
  * }
  */
-exports.configure = function (swig, app, options) {
+exports.initialize = function (swig, app, options) {
 
   options = vlidateOptions(options);
 
@@ -114,7 +117,7 @@ exports.configure = function (swig, app, options) {
 
   app.get('/' + options.route + '/edit/:contentId', function (req, res) {
 
-    if(admin) {
+    if (admin) {
       var content = '';
       if (fs.existsSync('./app/content/' + req.params.contentId)) {
         content = fs.readFileSync('./app/content/' + req.params.contentId).toString();
@@ -122,7 +125,7 @@ exports.configure = function (swig, app, options) {
       res.render(__dirname + '/index', {
         contentId: req.params.contentId,
         content: content,
-        markedjs: options.bowerComponents + '/marked/lib/marked.js',
+        markedjs: options.bowerComponentsPath + '/marked/lib/marked.js',
         returnUrl: req.query.refUrl
       });
     } else {
@@ -136,7 +139,7 @@ exports.configure = function (swig, app, options) {
    * Each will need to refresh swig cache.
    */
 
-  watch('./app/content/', function() {
+  watch('./app/content/', function () {
     swig.invalidateCache();
   });
 };
@@ -146,11 +149,21 @@ exports.configure = function (swig, app, options) {
  * @param {object} options
  * @return {object} options
  */
-var vlidateOptions = function(options) {
+var vlidateOptions = function (options) {
 
-  if(!options.route)
+  var defaultOptions = {
+    route: 'express-cms',
+    bowerComponentsPath: '/components'
+  };
+
+  if (!options)
+    return defaultOptions;
+
+  if (!options.route)
     options.route = 'express-cms';
 
-  console.log(options);
+  if (!options.bowerComponentsPath)
+    options.bowerComponentsPath = '/components';
+
   return options;
 };

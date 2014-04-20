@@ -1,4 +1,4 @@
-swig-cms
+Swig CMS
 ========
 
 Add basic content management  
@@ -10,11 +10,17 @@ Minimum configuration required:
 
   - Type some Markdown text in the left window
   - See the HTML in the right
-  - Magic 4444 
+
+Some black quotes:
+
+> This is a very famous man's quote.  
+> ddsda <cite>small jogn.</cite>
+
+Some Code:
  
-```html  
-<textarea rows='77' cols='50' name='content'>
-</textarea>```
+```js
+var gulp = require('gulp');
+```
 
 ```sh
 git clone [git-repo-url] dillinger
@@ -22,5 +28,3 @@ cd dillinger
 npm i -d
 mkdir -p public/files/{md,html,pdf}
 ```
-
-Ok this is magic after all! 121212

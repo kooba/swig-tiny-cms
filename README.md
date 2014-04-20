@@ -1,4 +1,4 @@
-swig-cms
+Swig CMS
 ========
 
 Add basic content management capability to your existing Express.js + SWIG applications.
@@ -21,19 +21,17 @@ bower install marked --save
 
 #Usage:
 ```js
-var cmstag = require('./app/tags/tag-cms');
+var swigCms = require('swig-cms');
 
 app.use(function(req, res, next){
-    if(req)
-        cmstag.isAdmin(req.session && req.session.isAuthenticated);
+        swigCms.isAdmin(req.isAuthenticated());
     next();
 });
 
-cmstag.configure(swig, app);
+swigCms.configure(swig, app);
 ```
 
-Live Preview
-========
+#Live Preview
 
 To enable live preview during editing install markdown with bower
 ```
@@ -42,6 +40,7 @@ bower install markdown --save
 
 Provide bower component root folder within swig-cms options:
 
+```js
 var options = { bowerComponents: "public/components" }
-
 cmstag.configure(swig, app, options);
+````
