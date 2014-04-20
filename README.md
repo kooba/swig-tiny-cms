@@ -25,9 +25,7 @@ Require Swig CMS
 var swigCms = require('swig-cms');
 ```
 
-After typical Express and Swig configuration
-
-Provide a way for Swig CMS to know when user is authorized to edit content via middleware.
+After typical Express and Swig configuration, provide a way for Swig CMS to know when user is authorized to edit content via middleware.
 
 ```js
 app.use(function(req, res, next){
