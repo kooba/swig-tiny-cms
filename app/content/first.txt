@@ -8,13 +8,16 @@ Support for Markdown or HTML content sections with Mongodb or file-based persist
 
 Minimum configuration required:
 
-  - Type some Markdown text in the left window
-  - See the HTML in the right
+- Type some Markdown text in the left window
+- See the HTML in the right
+- fdsfsdfs fdsf dsfdsfsf s
+- Another bullet point
 
 Some black quotes:
 
 > This is a very famous man's quote.  
-> ddsda <cite>small jogn.</cite>
+> ddsda <cite>small jogn.</cite>  
+> More quotes
 
 Some Code:
  

@@ -1,6 +1,8 @@
-What is  
-## AMD  
-Anyway  
-This is a bad baby!
+#Just another page sections ready to be edited!
 
-Still can't render code :(
+- What is  
+ 
+>Anyway  
+> This is a bad baby!
+
+`do it now`

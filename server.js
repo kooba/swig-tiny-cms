@@ -3,7 +3,7 @@ var swig = require('swig');
 var http = require('http');
 var path = require('path');
 var app = express();
-var swigCms = require('./app/tags/tag-cms');
+var swigCms = require('./lib/tags/tag-cms');
 var fs = require('fs');
 var marked = require('marked');
 
@@ -34,7 +34,8 @@ app.use(function (req, res, next) {
  */
 
 var options = {
-  bowerComponentsPath: '/components'
+  bowerComponentsPath: '/components',
+  contentDirectory: '/content' //TODO make this configurable.
 };
 
 /**
