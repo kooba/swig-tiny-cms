@@ -1,1 +1,1 @@
-module.exports = require('./lib/tags/tag-cms');
+module.exports = require('./lib/tags/cms');
