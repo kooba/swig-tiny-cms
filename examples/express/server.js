@@ -35,7 +35,7 @@ app.use(function (req, res, next) {
 
 var options = {
   bowerComponentsPath: '/components',
-  contentDirectory: '/content' //TODO make this configurable.
+  contentDirectory: './content/'
 };
 
 /**
@@ -48,11 +48,7 @@ swigCms.initialize(swig, app, options);
  */
 
 app.get('/', function (req, res) {
-
-  var text = fs.readFileSync('./app/content/first.txt').toString();
-  res.render('index', {
-    marked: marked(text)
-  });
+  res.render('index', {});
 });
 
 app.get('/about', function (req, res) {
