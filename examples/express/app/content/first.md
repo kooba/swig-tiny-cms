@@ -1,7 +1,7 @@
 Swig CMS
 ========
 
-Add basic content management  
+Add basic content management  12  
 capability to your existing Express.js + SWIG applications.  
 
 Support for Markdown or HTML content sections with Mongodb or file-based persistance.
