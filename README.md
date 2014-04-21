@@ -58,5 +58,9 @@ New tag 'cms' will be registered with your Swig template engine. It requires con
 {% cms 'contentId' %}
 ```
 
-The same content identifiers can be used to reuse them.
+After adding this tag, editable content section will be available to your authorized users.
+
+Content will be saved in a file with contentId.md name.
+
+The same content identifiers can be used if you would like to reuse them.
 
