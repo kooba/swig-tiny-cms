@@ -35,7 +35,8 @@ app.use(function (req, res, next) {
 
 var options = {
   bowerComponentsPath: '/components',
-  contentDirectory: './content/'
+  contentDirectory: './content/',
+  root: __dirname //TODO:Set it in app config file.
 };
 
 /**
