@@ -1,13 +1,15 @@
 Swig CMS
 ========
 
+#Overview
+
 Adds basic content management capability to your existing Express.js + Swig applications.
 
 - Support for Markdown content sections.
 - File-based persistence.
 - Works on Node.js clusters.
 
-Install Swig CMS:
+#Installation
 
 ```sh
 npm install swig-cms --save
@@ -19,8 +21,7 @@ Marked is used on the client side for live preview.
 bower install marked --save
 ```
 
-#Usage:
-
+#Configuration
 
 Require Swig CMS
 ```js
@@ -49,4 +50,14 @@ Initialize Swig CMS
 ```js
 swigCms.initialize(swig, app, options);
 ````
+
+#Usage
+
+New tag 'cms' will be registered with your Swig template engine. It requires contentId as a string:
+
+```swig
+{% cms 'contentId' %}
+```
+
+The same content identifiers can be used to reuse them.
 
