@@ -31,8 +31,6 @@ gulp.task('default', ['server', 'watch', 'open'], function() {
   startLivereload();
 });
 
-
-
 // clean up if an error goes unhandled.
 process.on('exit', function() {
   if (node)
@@ -56,23 +54,7 @@ var notifyLivereload = function notifyLivereload(filesChanged) {
 };
 
 gulp.task('wait', function (cb) {
-  // setTimeout could be any async task
   setTimeout(function () {
     cb();
-  }, 600);
+  }, 500);
 });
-//
-//gulp.task('default', function() {
-//  startLivereload();
-//  var filesChanged;
-//  nodemon({ script: 'server.js', ext: 'html js', ignore: ['ignored.js'] })
-//    //.on('change', ['lint'])
-//    .on('restart', function (files) {
-//      filesChanged = files;
-//      console.log('restarted!')
-//    })
-//    .on('start', function() {
-//      notifyLivereload(filesChanged);
-//      console.log('hopefully this is later' + filesChanged);
-//    });
-//});
