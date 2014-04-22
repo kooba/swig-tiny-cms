@@ -1,60 +1,69 @@
 var gulp = require('gulp');
 var spawn = require('child_process').spawn;
 var open = require('gulp-open');
+var liveReload = require('tiny-lr')();
 var node;
 
-gulp.task('server', function() {
+var server = function (cb) {
   if (node) node.kill();
-  node = spawn('node', ['./examples/express/server.js'], {stdio: 'inherit'})
+  node = spawn('node', ['./examples/express/server.js'])
   node.on('close', function (code) {
     if (code === 8) {
       gulp.log('Error detected, waiting for changes...');
     }
   });
-});
 
-gulp.task('livereload', ['server', 'wait'], function() {
-  notifyLivereload('test.html');
-});
+  node.stdout.on('data', function (data) {
+    console.log(data.toString());
+    if (cb) {
+      if (data.toString().indexOf('Application Started') > -1)
+        cb();
+    }
+  });
 
-gulp.task('watch', function() {
-  gulp.watch(['server.js','app/**/*.js','app/**/*.html'], ['livereload']);
-});
-
-gulp.task('open', function(){
-  console.log('opening');
-  gulp.src("htttp://localhost:1337/")
-    .pipe(open());
-});
-
-gulp.task('default', ['server', 'watch', 'open'], function() {
-  startLivereload();
-});
+  node.stderr.on('data', function (data) {
+    console.log(data.toString());
+  });
+};
 
 // clean up if an error goes unhandled.
-process.on('exit', function() {
+process.on('exit', function () {
   if (node)
     node.kill();
 });
 
-//
-var lr;
-var startLivereload = function() {
-  lr = require('tiny-lr')();
-  lr.listen(35729);
+gulp.task('watch', function () {
+
+  gulp.watch(['**/*.js', '**/*.html'], function (event) {
+    console.log('file ' + event.path + ' changed. Reloading...');
+    server(function () {
+      notifyLiveReload(event.path);
+    });
+  });
+});
+
+gulp.task('open', function () {
+  gulp.src("http://localhost:1337/")
+    .pipe(open());
+});
+
+gulp.task('default', ['watch', 'open'], function () {
+  server(function () {
+    startLiveReload();
+  });
+});
+
+var startLiveReload = function () {
+  liveReload.listen(35729);
 };
 
-var notifyLivereload = function notifyLivereload(filesChanged) {
+var notifyLiveReload = function notifyLiveReload(filesChanged) {
 
-  lr.changed({
+  liveReload.changed({
     body: {
       files: filesChanged
     }
   });
 };
 
-gulp.task('wait', function (cb) {
-  setTimeout(function () {
-    cb();
-  }, 500);
-});
+
