@@ -2,6 +2,16 @@
 
 Adds basic content management capability to your existing Express.js + Swig applications.
 
+TODO:
+- Tests!!!
+- Support for Express 3.x and 4.x
+- Express 4.x example
+-- With Bootstrap
+- Support passing marked parameters
+- Improve Edit link appearance
+- Improve Editor Page, add Bootstrap Markdown or PageDown for editor.
+- Setup Demo Page
+
 ##Overview
 
 - Support for Markdown content sections.
