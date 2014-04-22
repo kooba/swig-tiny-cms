@@ -33,8 +33,7 @@ process.on('exit', function () {
 });
 
 gulp.task('watch', function () {
-
-  gulp.watch(['**/*.js', '**/*.html'], function (event) {
+  gulp.watch(['examples/**/*.js', 'examples/**/*.html', 'lib/**/*'], { interval: 500 }, function (event) {
     console.log('file ' + event.path + ' changed. Reloading...');
     server(function () {
       notifyLiveReload(event.path);
