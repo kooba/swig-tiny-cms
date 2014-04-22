@@ -16,6 +16,7 @@ TODO:
 
 - Support for Markdown content sections.
 - File-based persistence.
+- Works with Express 3.x and 4.x
 - Works on Node.js clusters.
 
 ##Installation
