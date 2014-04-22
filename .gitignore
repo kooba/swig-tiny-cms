@@ -2,5 +2,5 @@
 npm-debug.log
 node_modules/*
 .idea
-examples/**/public/components/*
-examples/**/node_modules/*
+examples/express/public/components/*
+examples/express/node_modules/*
