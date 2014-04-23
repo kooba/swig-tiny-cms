@@ -4,9 +4,9 @@ Adds basic content management capability to your existing Express.js + Swig appl
 
 TODO:
 - Tests!!!
-- Support for Express 3.x and 4.x
-- Express 4.x example
--- With Bootstrap
+- Move example to Express 4.x
+- Show req.isAdmin() usage with passport
+- Use Bootstrap for example
 - Support passing marked parameters
 - Improve Edit link appearance
 - Improve Editor Page, add Bootstrap Markdown or PageDown for editor.
