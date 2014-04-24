@@ -7,7 +7,6 @@ var fs = require('fs');
 var path = require('path');
 var request = require('supertest');
 
-//configure view engine
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
@@ -29,7 +28,6 @@ app.use(function (req, res, next) {
 
 swigCms.initialize(swig, app, options);
 
-
 describe('When rendering cms tag for non Admin users', function () {
   describe('content will be', function () {
     admin = false;
@@ -38,7 +36,7 @@ describe('When rendering cms tag for non Admin users', function () {
       done();
     });
 
-    it('read from the disk', function (done) {
+    it('read from the disk if exists', function (done) {
       createContentFile('test.md', '#test');
       swig.render("{% cms 'test' %}").should.equal("<h1 id=\"test\">test</h1>\n");
       removeContentFile('test.md');
@@ -48,11 +46,8 @@ describe('When rendering cms tag for non Admin users', function () {
   });
 });
 
-
 describe('When rendering cms tag for Admin user', function () {
-
   describe('content will be', function () {
-
     before(function (done) {
 
       admin = true;
@@ -101,14 +96,14 @@ describe('When rendering cms tag for Admin user', function () {
   });
 });
 
-describe('When editing content by', function () {
-   describe('un-authorized user', function() {
-    it('will redirect user back', function (done) {
+describe('When editing content', function () {
+   describe('by un-authorized users', function() {
+    it('they will be redirected back', function (done) {
       admin = false;
       request(app)
         .get('/' + options.route + '/edit/' + contentName)
         .expect(302)
-        .end(function (err, res) {
+        .end(function (err) {
           if (err)
             done(err);
           else
@@ -117,21 +112,92 @@ describe('When editing content by', function () {
     });
   });
 
-  describe('by authorized user', function() {
-    it('will render editor', function(done) {
+  describe('by authorized users', function() {
+    before(function(done) {
+      createContentFile(contentName + '.md', '#test');
+      done();
+    });
+
+    after(function(done) {
+      removeContentFile(contentName + '.md');
+      done();
+    });
+    it('editor will rendered', function(done) {
       admin = true;
       request(app)
         .get('/' + options.route + '/edit/' + contentName)
         .expect(200)
         .end(function (err, res) {
-          if(err)
+          if(err) {
             done(err);
-          else
+          }
+          else {
+            res.text.should.containEql('#test');
             done();
+          }
         });
     });
   });
 });
+
+describe('When saving content', function () {
+  describe('by authorized users', function() {
+    it('new content will be saved', function(done) {
+      done();
+    });
+
+    it('they will be redirected back to starting page', function(done) {
+      done();
+    });
+
+    it('new content will be displayed', function(done) {
+      done();
+    });
+  });
+
+  describe('by un-authorized users', function() {
+    it('content won\'t be saved', function(done) {
+      done();
+    });
+
+    it('they will be redirected back to starting page', function(done) {
+      done();
+    });
+
+    it('old content will be displayed', function(done) {
+      done();
+    });
+  });
+});
+
+describe('When content is changed by other process', function() {
+  it('current process will reload it from the disk', function(done) {
+    done();
+  });
+});
+
+describe('Default options will be used if not provided', function() {
+  it('for root', function(done) {
+    done();
+  });
+  //etc...
+});
+
+describe('Options can be customized:', function() {
+  it('Controller slug can be changed', function(done) {
+    done();
+  });
+
+  it('Content directory can be changed', function(done) {
+    done();
+  });
+
+  it('Marked options can be changed', function(done) {
+    done();
+  });
+});
+
+
 
 var createContentFile = function (name, content) {
   fs.mkdirSync(path.join(options.root, options.contentDirectory));
@@ -152,4 +218,3 @@ var removeViewFile = function (name) {
   fs.unlinkSync(path.join(options.root, 'views', name));
   fs.rmdirSync(path.join(options.root, 'views'));
 };
-

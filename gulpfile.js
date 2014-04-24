@@ -51,7 +51,7 @@ gulp.task('open', function () {
 
 gulp.task('test', function () {
 
-  var files = args.file ? 'tests/' + file : 'tests/*';
+  var files = args.file ? 'tests/' + file : 'tests/test*';
 
   gulp.src(files)
     .pipe(mocha({
