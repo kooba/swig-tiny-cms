@@ -7,21 +7,32 @@ var fs = require('fs');
 var path = require('path');
 var request = require('supertest');
 
+//configure view engine
+app.engine('html', swig.renderFile);
+app.set('view engine', 'html');
+app.set('views', __dirname + '/views');
+
+var contentName = 'test';
+var admin;
+
 var options = {
   bowerComponentsPath: '/components',
   contentDirectory: './content/',
-  root: __dirname
+  root: __dirname,
+  route: 'swig-cms'
 };
+
+app.use(function (req, res, next) {
+  swigCms.isAdmin(admin);
+  next();
+});
+
+swigCms.initialize(swig, app, options);
+
 
 describe('When rendering cms tag for non Admin users', function () {
   describe('content will be', function () {
-
-    before(function (done) {
-      swigCms.isAdmin(false);
-      swigCms.initialize(swig, app, options);
-      done();
-    });
-
+    admin = false;
     it('blank if new', function (done) {
       swig.render("{% cms 'test' %}").should.equal('');
       done();
@@ -37,44 +48,25 @@ describe('When rendering cms tag for non Admin users', function () {
   });
 });
 
-describe('When rendering cms tag for Admin user', function() {
 
-  var contentFileName = 'test';
+describe('When rendering cms tag for Admin user', function () {
 
   describe('content will be', function () {
 
     before(function (done) {
 
-      //configure view engine
-      app.engine('html', swig.renderFile);
-      app.set('view engine', 'html');
-      app.set('views', __dirname + '/views');
-
-      //pretend passport like authorization
-      app.use(function (req, res, next) {
-        req.isAuthenticated = function() {
-          return true;
-        };
-        next();
-      });
-
-      app.use(function (req, res, next) {
-        swigCms.isAdmin(req.isAuthenticated());
-        next();
-      });
-
-      swigCms.initialize(swig, app, options);
+      admin = true;
 
       app.get('/', function (req, res) {
         res.render('index', {});
       });
 
-      createViewFile('index.html', "{% cms '" + contentFileName + "' %}");
+      createViewFile('index.html', "{% cms '" + contentName + "' %}");
 
       done();
     });
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
       swig.invalidateCache();
       done();
     });
@@ -89,21 +81,53 @@ describe('When rendering cms tag for Admin user', function() {
         .get('/')
         .expect(200)
         .end(function (err, res) {
-          res.text.should.equal("<a href='/swig-cms/edit/" + contentFileName + "?refUrl=/'>Edit</a><div></div>")
+          res.text.should.equal("<a href='/swig-cms/edit/" + contentName + "?refUrl=/'>Edit</a><div></div>")
           done();
         });
     });
 
     it('editable with content read from the disk', function (done) {
-      createContentFile(contentFileName + '.md', '#' + contentFileName);
+      createContentFile(contentName + '.md', '#' + contentName);
 
       request(app)
         .get('/')
         .expect(200)
         .end(function (err, res) {
-          res.text.should.equal("<a href='/swig-cms/edit/" + contentFileName + "?refUrl=/'>Edit</a><div><h1 id=\"" + contentFileName + "\">" + contentFileName + "</h1>\n</div>");
-          removeContentFile(contentFileName + '.md');
+          res.text.should.equal("<a href='/swig-cms/edit/" + contentName + "?refUrl=/'>Edit</a><div><h1 id=\"" + contentName + "\">" + contentName + "</h1>\n</div>");
+          removeContentFile(contentName + '.md');
           done();
+        });
+    });
+  });
+});
+
+describe('When editing content by', function () {
+   describe('un-authorized user', function() {
+    it('will redirect user back', function (done) {
+      admin = false;
+      request(app)
+        .get('/' + options.route + '/edit/' + contentName)
+        .expect(302)
+        .end(function (err, res) {
+          if (err)
+            done(err);
+          else
+            done();
+        });
+    });
+  });
+
+  describe('by authorized user', function() {
+    it('will render editor', function(done) {
+      admin = true;
+      request(app)
+        .get('/' + options.route + '/edit/' + contentName)
+        .expect(200)
+        .end(function (err, res) {
+          if(err)
+            done(err);
+          else
+            done();
         });
     });
   });

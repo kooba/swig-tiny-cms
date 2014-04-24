@@ -2,7 +2,10 @@ var gulp = require('gulp');
 var spawn = require('child_process').spawn;
 var open = require('gulp-open');
 var liveReload = require('tiny-lr')();
+var mocha = require('gulp-mocha');
 var node;
+var args = require('minimist')(process.argv);
+
 
 var server = function (cb) {
   if (node) node.kill();
@@ -44,6 +47,17 @@ gulp.task('watch', function () {
 gulp.task('open', function () {
   gulp.src("http://localhost:1337/")
     .pipe(open());
+});
+
+gulp.task('test', function () {
+
+  var files = args.file ? 'tests/' + file : 'tests/*';
+
+  gulp.src(files)
+    .pipe(mocha({
+      reporter: 'spec',
+      grep: args.grep
+    }));
 });
 
 gulp.task('default', ['watch', 'open'], function () {

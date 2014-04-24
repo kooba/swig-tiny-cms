@@ -1,4 +1,5 @@
 .git*
 examples/
-test/
+tests/
 .DS_Store
+gulpfile.js
