@@ -28,6 +28,39 @@ app.use(function (req, res, next) {
 
 swigCms.initialize(swig, app, options);
 
+describe('When adding Swig CMS tag to a page', function() {
+  describe('and content id is not set', function() {
+
+    before(function (done) {
+      createViewFile('index.html', "{% cms %}");
+      app.get('/', function (req, res) {
+        res.render('index', {});
+      });
+      done();
+    });
+
+    after(function (done) {
+      removeViewFile('index.html');
+      done();
+    });
+
+    it('error will be thrown', function(done) {
+        request(app)
+          .get('/')
+          .expect(500)
+          .end(function (err, res) {
+            if(err) {
+              done(err);
+            }
+            else {
+              res.text.should.containEql("Swig CMS tag requires ContentId");
+              done();
+            }
+          });
+    });
+  });
+});
+
 describe('When rendering cms tag for non Admin users', function () {
   describe('content will be', function () {
     admin = false;
@@ -49,15 +82,11 @@ describe('When rendering cms tag for non Admin users', function () {
 describe('When rendering cms tag for Admin user', function () {
   describe('content will be', function () {
     before(function (done) {
-
       admin = true;
-
       app.get('/', function (req, res) {
         res.render('index', {});
       });
-
       createViewFile('index.html', "{% cms '" + contentName + "' %}");
-
       done();
     });
 
@@ -196,8 +225,6 @@ describe('Options can be customized:', function() {
     done();
   });
 });
-
-
 
 var createContentFile = function (name, content) {
   fs.mkdirSync(path.join(options.root, options.contentDirectory));
