@@ -1,12 +1,14 @@
 var swigCms = require('../');
 var swig = require('swig');
 var express = require('express');
-var app = express();
 var should = require('should');
 var fs = require('fs');
 var path = require('path');
 var request = require('supertest');
+var bodyParser = require('body-parser');
+var app = express();
 
+app.use(bodyParser());
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
@@ -29,7 +31,7 @@ app.use(function (req, res, next) {
 swigCms.initialize(swig, app, options);
 
 describe('When adding Swig CMS tag to a page', function() {
-  describe('and content id is not set', function() {
+  describe('and content id is not provided', function() {
 
     before(function (done) {
       createViewFile('index.html', "{% cms %}");
@@ -130,14 +132,10 @@ describe('When editing content', function () {
     it('they will be redirected back', function (done) {
       admin = false;
       request(app)
-        .get('/' + options.route + '/edit/' + contentName)
+        .get('/' + options.route + '/edit/' + contentName + '/?refUrl=/')
         .expect(302)
-        .end(function (err) {
-          if (err)
-            done(err);
-          else
-            done();
-        });
+        .expect(/Moved Temporarily\. Redirecting to \//)
+        .end(done);
     });
   });
 
@@ -151,20 +149,14 @@ describe('When editing content', function () {
       removeContentFile(contentName + '.md');
       done();
     });
+
     it('editor will rendered', function(done) {
       admin = true;
       request(app)
         .get('/' + options.route + '/edit/' + contentName)
         .expect(200)
-        .end(function (err, res) {
-          if(err) {
-            done(err);
-          }
-          else {
-            res.text.should.containEql('#test');
-            done();
-          }
-        });
+        .expect(/#test/)
+        .end(done);
     });
   });
 });
@@ -172,7 +164,24 @@ describe('When editing content', function () {
 describe('When saving content', function () {
   describe('by authorized users', function() {
     it('new content will be saved', function(done) {
-      done();
+
+      admin = true;
+      request(app)
+        .post('/' + options.route + '/save/?returnUrl=/')
+        .type('form')
+        .send({ content: '#test' })
+        .send({ contentId: 'test' })
+        .expect(302)
+        .expect(/Moved Temporarily\. Redirecting to \//)
+        .end(function (err, res) {
+          if(err) {
+            done(err);
+          } else {
+            readContentFile(contentName + '.md').should.equal('#test');
+            removeContentFile(contentName + '.md');
+            done();
+          }
+        });
     });
 
     it('they will be redirected back to starting page', function(done) {
@@ -244,4 +253,8 @@ var createViewFile = function (name, content) {
 var removeViewFile = function (name) {
   fs.unlinkSync(path.join(options.root, 'views', name));
   fs.rmdirSync(path.join(options.root, 'views'));
+};
+
+var readContentFile = function(name) {
+  return fs.readFileSync(path.join(options.root, options.contentDirectory, name)).toString();
 };

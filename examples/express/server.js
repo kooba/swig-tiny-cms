@@ -6,11 +6,13 @@ var path = require('path');
 var swigCms = require('../../index.js');
 var fs = require('fs');
 var marked = require('marked');
+var bodyParser = require('body-parser');
 
 
 app.use(express.favicon());
 app.use(express.cookieParser());
-app.use(express.bodyParser());
+//app.use(express.bodyParser());
+app.use(bodyParser());
 app.use(express.session({ secret: 'keyboard cat' }));
 
 

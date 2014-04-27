@@ -56,7 +56,7 @@ gulp.task('test', function () {
   gulp.src(files)
     .pipe(mocha({
       reporter: 'spec',
-      grep: args.grep
+      grep: args.g
     }));
 });
 
