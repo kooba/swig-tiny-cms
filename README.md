@@ -75,3 +75,25 @@ Content will be saved in a file with contentId.md name.
 
 The same content identifiers can be used if you would like to reuse them.
 
+##Test
+
+[Mocha](http://visionmedia.github.io/mocha/) and [gulp](http://gulpjs.com/) needs to be installed globally:
+
+```sh
+$ npm install -g mocha gulp
+```
+
+Run tests:
+
+```sh
+$ gulp test
+```
+
+To run specific test user Mocha's grep:
+
+```sh
+$ gul test -g "part of the test name"
+```
+
+
+

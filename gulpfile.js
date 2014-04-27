@@ -3,6 +3,7 @@ var spawn = require('child_process').spawn;
 var open = require('gulp-open');
 var liveReload = require('tiny-lr')();
 var mocha = require('gulp-mocha');
+var istanbul = require('gulp-istanbul');
 var node;
 var args = require('minimist')(process.argv);
 
@@ -51,13 +52,18 @@ gulp.task('open', function () {
 
 gulp.task('test', function () {
 
-  var files = args.file ? 'tests/' + file : 'tests/test*';
+  var files = args.f ? 'tests/' + args.f : 'tests/test*';
 
-  gulp.src(files)
-    .pipe(mocha({
-      reporter: 'spec',
-      grep: args.g
-    }));
+  gulp.src(['lib/**/*.js', 'index.js'])
+    .pipe(istanbul()) // Covering files
+    .on('end', function () {
+      gulp.src(files)
+        .pipe(mocha({
+          reporter: 'spec',
+          grep: args.g
+        }))
+        .pipe(istanbul.writeReports());
+    });
 });
 
 gulp.task('default', ['watch', 'open'], function () {
