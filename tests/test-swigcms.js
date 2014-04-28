@@ -55,7 +55,7 @@ describe('When adding Swig CMS tag to a page', function() {
               done(err);
             }
             else {
-              res.text.should.containEql("Swig CMS tag requires ContentId");
+              res.text.should.containEql("Swig CMS Error: CMS tag requires ContentId argument e.g.");
               done();
             }
           });
@@ -183,27 +183,26 @@ describe('When saving content', function () {
           }
         });
     });
-
-    it('they will be redirected back to starting page', function(done) {
-      done();
-    });
-
-    it('new content will be displayed', function(done) {
-      done();
-    });
   });
 
   describe('by un-authorized users', function() {
     it('content won\'t be saved', function(done) {
-      done();
-    });
-
-    it('they will be redirected back to starting page', function(done) {
-      done();
-    });
-
-    it('old content will be displayed', function(done) {
-      done();
+      admin = false;
+      request(app)
+        .post('/' + options.route + '/save/?returnUrl=/')
+        .type('form')
+        .send({ content: '#test' })
+        .send({ contentId: 'test' })
+        .expect(302)
+        .expect(/Moved Temporarily\. Redirecting to \//)
+        .end(function (err, res) {
+          if(err) {
+            done(err);
+          } else {
+            fs.existsSync(contentName + '.md').should.be.false;
+            done();
+          }
+        });
     });
   });
 });
