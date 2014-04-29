@@ -107,7 +107,7 @@ describe('When rendering cms tag for Admin user', function () {
         .get('/')
         .expect(200)
         .end(function (err, res) {
-          res.text.should.equal("<a href='/swig-cms/edit/" + contentName + "?refUrl=/'>Edit</a><div></div>")
+          res.text.should.equal("<a href='/swig-cms/edit/" + contentName + "?returnUrl=/'>Edit</a><div></div>")
           done();
         });
     });
@@ -119,7 +119,7 @@ describe('When rendering cms tag for Admin user', function () {
         .get('/')
         .expect(200)
         .end(function (err, res) {
-          res.text.should.equal("<a href='/swig-cms/edit/" + contentName + "?refUrl=/'>Edit</a><div><h1 id=\"" + contentName + "\">" + contentName + "</h1>\n</div>");
+          res.text.should.equal("<a href='/swig-cms/edit/" + contentName + "?returnUrl=/'>Edit</a><div><h1 id=\"" + contentName + "\">" + contentName + "</h1>\n</div>");
           removeContentFile(contentName + '.md');
           done();
         });
@@ -132,7 +132,7 @@ describe('When editing content', function () {
     it('they will be redirected back', function (done) {
       admin = false;
       request(app)
-        .get('/' + options.route + '/edit/' + contentName + '/?refUrl=/')
+        .get('/' + options.route + '/edit/' + contentName + '/?returnUrl=/')
         .expect(302)
         .expect(/Moved Temporarily\. Redirecting to \//)
         .end(done);
@@ -203,6 +203,18 @@ describe('When saving content', function () {
             done();
           }
         });
+    });
+  });
+
+  describe('with invalid parameters', function() {
+    it('will respond with error', function(done) {
+      admin = true;
+      request(app)
+        .post('/' + options.route + '/save/?returnUrl=/')
+        .type('form')
+        .expect(500)
+        .expect(/Swig CMS Error: Insufficient parameters when saving content./)
+        .end(done);
     });
   });
 });
