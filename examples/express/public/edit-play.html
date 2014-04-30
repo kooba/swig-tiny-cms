@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<table>
+  <tr>
+    <td>
+      <div class='swig-cms-div'>
+        <div class='swig-cms-edit'>
+          <div class='swig-cms-edit-inner'>
+            <a class='button grow' href='/swig-cms/edit/first?returnUrl=/'>
+              EDIT
+            </a>
+          </div>
+        </div>
+        <span id="swig-cms">Swig CMS</span>
+
+        <p>Add basic content management 12
+          capability to your existing Express.js + SWIG applications. </p>
+      </div>
+    </td>
+    <td>
+      <div class='swig-cms-div'>
+        <div class='swig-cms-edit'>
+          <div class='swig-cms-edit-inner'>
+            <a class='button grow' href='/swig-cms/edit/first?returnUrl=/'>
+              EDIT
+            </a>
+          </div>
+        </div>
+        <span id="swig-cms">Swig CMS</span>
+
+        <p>Add basic content management 12
+          capability to your existing Express.js + SWIG applications. </p>
+      </div>
+    </td>
+  </tr>
+</table>
+<style>
+  .swig-cms-div > .swig-cms-edit {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 0.5s, opacity 0.5s linear;
+
+  }
+
+  .swig-cms-div:hover > .swig-cms-edit {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+  }
+
+  .swig-cms-edit {
+    padding: 2px;
+    position: absolute;
+    width: auto;
+  }
+
+  .swig-cms-edit a {
+    color: cornflowerblue;
+  }
+
+  .swig-cms-edit-inner {
+    padding: 5px;
+    text-align: center;
+    background-color: #ffffff;
+    width: 30px;
+    float: right;
+    font-family: arial, sans-serif;
+    font-size: 8pt;
+    border: 1px inset cornflowerblue;
+    border-radius: 4px;
+  }
+</style>
+</body>
+</html>
