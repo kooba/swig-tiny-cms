@@ -8,9 +8,9 @@ TODO:
 - Show req.isAdmin() usage with passport
 - Use Bootstrap for example
 - Support passing marked parameters
-- Improve Edit link appearance
 - Improve Editor Page, add Bootstrap Markdown or PageDown for editor.
 - Setup Demo Page
+- Allow to pass custom CSS to use in editor.
 
 ##Overview
 
