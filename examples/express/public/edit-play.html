@@ -40,11 +40,14 @@
   </tr>
 </table>
 <style>
+  .swig-cms-div {
+    background-color: red;
+    width: 200px;
+  }
   .swig-cms-div > .swig-cms-edit {
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s linear 0.5s, opacity 0.5s linear;
-
   }
 
   .swig-cms-div:hover > .swig-cms-edit {
@@ -55,8 +58,7 @@
 
   .swig-cms-edit {
     padding: 2px;
-    position: absolute;
-    width: auto;
+    float: right;
   }
 
   .swig-cms-edit a {
@@ -68,7 +70,7 @@
     text-align: center;
     background-color: #ffffff;
     width: 30px;
-    float: right;
+    /*float: right;*/
     font-family: arial, sans-serif;
     font-size: 8pt;
     border: 1px inset cornflowerblue;

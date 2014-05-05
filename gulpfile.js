@@ -7,13 +7,12 @@ var istanbul = require('gulp-istanbul');
 var node;
 var args = require('minimist')(process.argv);
 
-
 var server = function (cb) {
   if (node) node.kill();
-  node = spawn('node', ['./examples/express/server.js'])
+  node = spawn('node', [__dirname + '/examples/express/server.js'])
   node.on('close', function (code) {
     if (code === 8) {
-      gulp.log('Error detected, waiting for changes...');
+      console.log('Error detected, waiting for changes...');
     }
   });
 
@@ -37,7 +36,7 @@ process.on('exit', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch(['examples/**/*.js', 'examples/**/*.html', 'lib/**/*'], { interval: 500 }, function (event) {
+  gulp.watch([__dirname + '/examples/**/*.js', __dirname + '/examples/**/*.html', __dirname + '/lib/**/*'], { interval: 500 }, function (event) {
     console.log('file ' + event.path + ' changed. Reloading...');
     server(function () {
       notifyLiveReload(event.path);
