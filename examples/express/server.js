@@ -1,38 +1,29 @@
 var express = require('express');
-var app = express();
-var swig = require('swig');
-var http = require('http');
-var path = require('path');
-var swigCms = require('../../index.js');
-var fs = require('fs');
-var marked = require('marked');
 var bodyParser = require('body-parser');
 var favicon = require('serve-favicon');
 var cookies = require('cookie-parser');
 var session = require('express-session');
-
+var app = express();
+var swig = require('swig');
+var path = require('path');
+var swigCms = require('../../index.js');
+var fs = require('fs');
 
 app.use(favicon(__dirname + '/public/img/favicon.png'));
 app.use(cookies());
 app.use(bodyParser());
 app.use(session({ secret: 'keyboard cat' }));
-
-app.engine('html', swig.renderFile);
-app.set('view engine', 'html');
-app.set('views', __dirname + '/app/views');
 app.use(express.static(path.join(__dirname, 'public')));
 
 /**
- * Provide a way for Swig CMS to know when user is authorized to edit content.
+ * Swig Setup
  */
-
-app.use(function (req, res, next) {
-  swigCms.isAdmin(req.session && req.session.isAuthenticated);
-  next();
-});
+app.engine('html', swig.renderFile);
+app.set('view engine', 'html');
+app.set('views', __dirname + '/app/views');
 
 /**
- * Set Swig CMS options here.
+ * 1. Set Swig Tiny-CMS options.
  */
 
 var options = {
@@ -40,7 +31,17 @@ var options = {
 };
 
 /**
- * Initialize Swig CMS
+ * 2. Provide a way for Swig Tiny-CMS to know when user is authorized to edit content.
+ */
+
+app.use(function (req, res, next) {
+  swigCms.canEditContent(req.session && req.session.isAuthenticated);
+  next();
+});
+
+
+/**
+ * 3. Initialize Swig CMS
  */
 swigCms.initialize(swig, app, options);
 
@@ -52,10 +53,6 @@ app.get('/', function (req, res) {
   res.render('index', {});
 });
 
-app.get('/about', function (req, res) {
-  res.render('about', {});
-});
-
 app.post('/login', function (req, res) {
   req.session.isAuthenticated = true;
   res.redirect('/');
@@ -64,10 +61,6 @@ app.post('/login', function (req, res) {
 app.post('/logout', function (req, res) {
   req.session.isAuthenticated = false;
   res.redirect('/');
-});
-
-app.get('/*', function (req, res) {
-  res.render(req.params[0], {});
 });
 
 app.listen(1337);

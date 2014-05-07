@@ -14,7 +14,7 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 
 
-var admin;
+var canEditContent;
 var contentName = 'test';
 var viewsDirectory = __dirname + '/views/';
 var contentDirectory = __dirname + '/content/';
@@ -25,7 +25,7 @@ var options = {
 };
 
 app.use(function (req, res, next) {
-  swigCms.isAdmin(admin);
+  swigCms.canEditContent(canEditContent);
   next();
 });
 
@@ -80,7 +80,7 @@ describe('', function() {
 
   describe('When rendering cms tag for non Admin users', function () {
     describe('content will be', function () {
-      admin = false;
+      canEditContent = false;
       it('blank if new', function (done) {
         swig.render("{% cms 'test' %}").should.equal('');
         done();
@@ -99,7 +99,7 @@ describe('', function() {
   describe('When rendering cms tag for Admin user', function () {
     describe('content will be', function () {
       before(function (done) {
-        admin = true;
+        canEditContent = true;
         app.get('/', function (req, res) {
           res.render('index', {});
         });
@@ -145,7 +145,7 @@ describe('', function() {
   describe('When editing content', function () {
     describe('by un-authorized users', function() {
       it('they will be redirected back', function (done) {
-        admin = false;
+        canEditContent = false;
         request(app)
           .get('/' + options.route + '/edit/' + contentName + '/?returnUrl=/')
           .expect(302)
@@ -166,7 +166,7 @@ describe('', function() {
       });
 
       it('editor will rendered', function(done) {
-        admin = true;
+        canEditContent = true;
         request(app)
           .get('/' + options.route + '/edit/' + contentName)
           .expect(200)
@@ -180,7 +180,7 @@ describe('', function() {
     describe('by authorized users', function() {
       it('new content will be saved', function(done) {
 
-        admin = true;
+        canEditContent = true;
         request(app)
           .post('/' + options.route + '/save/')
           .type('form')
@@ -203,7 +203,7 @@ describe('', function() {
 
     describe('by un-authorized users', function() {
       it('content won\'t be saved', function(done) {
-        admin = false;
+        canEditContent = false;
         request(app)
           .post('/' + options.route + '/save/?returnUrl=/')
           .type('form')
@@ -224,7 +224,7 @@ describe('', function() {
 
     describe('with invalid parameters', function() {
       it('will respond with error', function(done) {
-        admin = true;
+        canEditContent = true;
         request(app)
           .post('/' + options.route + '/save/?returnUrl=/')
           .type('form')
