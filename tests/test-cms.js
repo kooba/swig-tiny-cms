@@ -13,13 +13,14 @@ app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 
-var contentName = 'test';
+
 var admin;
+var contentName = 'test';
+var viewsDirectory = __dirname + '/views/';
+var contentDirectory = __dirname + '/content/';
 
 var options = {
-  bowerComponentsPath: '/components',
-  contentDirectory: './content/',
-  root: __dirname,
+  contentDirectory: contentDirectory,
   route: 'swig-cms'
 };
 
@@ -30,13 +31,10 @@ app.use(function (req, res, next) {
 
 swigCms.initialize(swig, app, options);
 
-describe('Swig CMS test suite', function() {
+describe('', function() {
 
-  //Cleanup any existing test files
+  //cleanup
   before(function(done) {
-
-    var contentDirectory = path.join(options.root, options.contentDirectory);
-    var viewsDirectory = path.join(options.root, 'views');
 
     if(fs.existsSync(contentDirectory))
       fs.rmdirSync(contentDirectory);
@@ -72,7 +70,7 @@ describe('Swig CMS test suite', function() {
               done(err);
             }
             else {
-              res.text.should.containEql("Swig CMS Error: CMS tag requires ContentId argument e.g.");
+              res.text.should.containEql("Swig Tiny-CMS Error: cms tag requires contentId argument e.g.");
               done();
             }
           });
@@ -124,7 +122,7 @@ describe('Swig CMS test suite', function() {
           .get('/')
           .expect(200)
           .end(function (err, res) {
-            res.text.should.equal("<a href='/swig-cms/edit/" + contentName + "?returnUrl=/'>Edit</a><div></div>")
+            res.text.should.equal("<div class='swig-cms-div'><div class='swig-cms-edit'><div class='swig-cms-edit-inner'><a class='button grow' href='/swig-cms/edit/" + contentName + "?returnUrl=/'>Edit</a></div></div></div>");
             done();
           });
       });
@@ -136,7 +134,7 @@ describe('Swig CMS test suite', function() {
           .get('/')
           .expect(200)
           .end(function (err, res) {
-            res.text.should.equal("<a href='/swig-cms/edit/" + contentName + "?returnUrl=/'>Edit</a><div><h1 id=\"" + contentName + "\">" + contentName + "</h1>\n</div>");
+            res.text.should.equal("<div class='swig-cms-div'><div class='swig-cms-edit'><div class='swig-cms-edit-inner'><a class='button grow' href='/swig-cms/edit/" + contentName + "?returnUrl=/'>Edit</a></div></div><h1 id=\"" + contentName + "\">" + contentName + "</h1>\n</div>");
             removeContentFile(contentName + '.md');
             done();
           });
@@ -269,25 +267,25 @@ describe('Swig CMS test suite', function() {
 
 
 var createContentFile = function (name, content) {
-  fs.mkdirSync(path.join(options.root, options.contentDirectory));
-  fs.writeFileSync(path.join(options.root, options.contentDirectory, name), content);
+  fs.mkdirSync(contentDirectory);
+  fs.writeFileSync(path.join(contentDirectory, name), content);
 };
 
 var removeContentFile = function (name) {
-  fs.unlinkSync(path.join(options.root, options.contentDirectory, name));
-  fs.rmdirSync(path.join(options.root, options.contentDirectory));
+  fs.unlinkSync(path.join(contentDirectory, name));
+  fs.rmdirSync(contentDirectory);
 };
 
 var createViewFile = function (name, content) {
-  fs.mkdirSync(path.join(options.root, 'views'));
-  fs.writeFileSync(path.join(options.root, 'views', name), content);
+  fs.mkdirSync(viewsDirectory);
+  fs.writeFileSync(path.join(viewsDirectory, name), content);
 };
 
 var removeViewFile = function (name) {
-  fs.unlinkSync(path.join(options.root, 'views', name));
-  fs.rmdirSync(path.join(options.root, 'views'));
+  fs.unlinkSync(path.join(viewsDirectory, name));
+  fs.rmdirSync(viewsDirectory);
 };
 
 var readContentFile = function(name) {
-  return fs.readFileSync(path.join(options.root, options.contentDirectory, name)).toString();
+  return fs.readFileSync(path.join(options.contentDirectory, name)).toString();
 };

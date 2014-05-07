@@ -7,14 +7,15 @@ var swigCms = require('../../index.js');
 var fs = require('fs');
 var marked = require('marked');
 var bodyParser = require('body-parser');
+var favicon = require('serve-favicon');
+var cookies = require('cookie-parser');
+var session = require('express-session');
 
 
-app.use(express.favicon());
-app.use(express.cookieParser());
-//app.use(express.bodyParser());
+app.use(favicon(__dirname + '/public/img/favicon.png'));
+app.use(cookies());
 app.use(bodyParser());
-app.use(express.session({ secret: 'keyboard cat' }));
-
+app.use(session({ secret: 'keyboard cat' }));
 
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
@@ -32,13 +33,10 @@ app.use(function (req, res, next) {
 
 /**
  * Set Swig CMS options here.
- *
  */
 
 var options = {
-  bowerComponentsPath: '/components',
-  contentDirectory: './content/',
-  root: __dirname //TODO:Set it in app config file.
+  contentDirectory:  __dirname + '/content/'
 };
 
 /**

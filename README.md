@@ -1,4 +1,4 @@
-#Swig CMS
+#Swig Tiny-CMS
 
 Adds basic content management capability to your existing Express.js + Swig applications.
 
