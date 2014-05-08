@@ -3,12 +3,11 @@
 <head>
   <meta charset="utf-8"/>
   <title>Eidt {{ contentId }}</title>
-  <!-- <link rel="stylesheet" title="Default" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/default.css">
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.2.1/css/bootstrap-markdown.min.css"> -->
 
-  <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/components/bootstrap-markdown/css/bootstrap-markdown.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.2.1/css/bootstrap-markdown.min.css">
+  <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css">
+  <script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
 
 </head>
 <body style="margin: 10px 10px 150px 10px;">
@@ -25,27 +24,25 @@
   <div style="width: 50%;float: left; padding: 20px 10px 10px 10px;" id="preview"></div>
 </div>
 
-<!--
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.2.1/js/bootstrap-markdown.min.js"></script>
--->
-
-<script src="/components/jquery/jquery.min.js" type="text/javascript"></script>
-<script src="/components/marked/lib/marked.js"></script>
-<script src="/components/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="/components/bootstrap-markdown/js/bootstrap-markdown.js"></script>
 
 <script>
 
   var editor = function (input, preview) {
     preview.html(marked(input.val()));
+    var blocks = document.querySelectorAll('pre code');
+    Array.prototype.forEach.call(blocks, hljs.highlightBlock);
   };
 
   $(function () {
 
-    $("#content").markdown({
+    var content = $("#content");
+    var preview = $("#preview");
+
+    content.markdown({
       additionalButtons: [
         [{
           name: "groupCustom",
@@ -65,11 +62,11 @@
 
     $(":button[title='Preview']").hide();
 
-    $("#content").on('focus input propertychange', function () {
-      editor($("#content"), $("#preview"));
+    content.on('focus input propertychange', function () {
+      editor(content,preview);
     });
 
-    editor($("#content"), $("#preview"));
+    editor(content,preview);
 
   });
 </script>

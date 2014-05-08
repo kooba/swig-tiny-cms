@@ -3,14 +3,10 @@
 Adds basic content management capability to your existing Express.js + Swig applications.
 
 TODO:
-- Tests!!!
-- Move example to Express 4.x
 - Show req.isAdmin() usage with passport
-- Use Bootstrap for example
-- Support passing marked parameters
-- Improve Editor Page, add Bootstrap Markdown or PageDown for editor.
+- Support passing marked parameters (pass them down to editor page)
 - Setup Demo Page
-- Allow to pass custom CSS to use in editor.
+- Allow to pass custom CSS to use in editor: Array of CSS files ex. Bootstrap + Markdown highlighter.
 
 ##Overview
 
@@ -92,7 +88,7 @@ $ gulp test
 To run specific test user Mocha's grep:
 
 ```sh
-$ gul test -g "part of the test name"
+$ gulp test -g "part of the test name"
 ```
 
 
