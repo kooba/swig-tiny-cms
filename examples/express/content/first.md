@@ -6,14 +6,6 @@ capability to your existing Express.js + SWIG applications.
 
 Support for Markdown or HTML content sections with Mongodb or file-based persistance.
 
-Minimum configuration required: 
-
-- Type some Markdown text in the left window
-- See the HTML in the right
-- fdsfsdfs fdsf dsfdsfsf s
-- Another bullet point
-- typical
-
 Some black quotes:
 
 > This is a very famous man's quote.  
@@ -22,10 +14,6 @@ Some black quotes:
 
 Some Code:
  
-```js
-var gulp = require('gulp');
-```
-
 ```sh
 git clone [git-repo-url] dillinger
 cd dillinger

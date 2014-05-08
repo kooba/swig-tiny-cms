@@ -1,8 +1,21 @@
 {% extends 'layout.html' %}
 {% block title %}Home Page{% endblock %}
+{% block jumbotron %}
+{% cms 'index-jumbotron' %}
+{% endblock %}
 {% block body %}
-{% cms 'first' %}
-{% cms 'second' %}
 
-<hr/>
+<!-- Example row of columns -->
+<div class="row">
+  <div class="col-lg-4">
+    {% cms 'first' %}
+  </div>
+  <div class="col-lg-4">
+    {% cms 'second' %}
+  </div>
+  <div class="col-lg-4">
+    {% cms 'third' %}
+  </div>
+</div>
+
 {% endblock %}

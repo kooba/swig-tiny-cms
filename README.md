@@ -8,6 +8,7 @@ TODO:
 - Setup Demo Page
 - Allow to pass custom CSS to use in editor: Array of CSS files ex. Bootstrap + Markdown highlighter.
 - Explain default highlighter CSS used.
+- When new (empty) content sections are added they are invisible.
 
 ##Overview
 

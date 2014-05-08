@@ -1,42 +1,63 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <title>{% block title %}{% endblock %} - Example</title>
-  <link rel="stylesheet" title="Default" href="//bootswatch.com/journal/bootstrap.css">
-  <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css">
-  <script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
-</head>
-<body style="margin: 50px 200px 50px 200px;">
-<header>
-  <h1>{% block title %}{% endblock %}</h1>
-  {% block header %}{% endblock %}
-  <nav>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/about">About</a></li>
-    </ul>
-  </nav>
-</header>
-<div style="margin-bottom: 30px;">
-  <div style="float: left;margin-right: 10px">
-    <form action="/login" method="post">
-      <button type="submit" class="btn btn-primary">Login</button>
-    </form>
-  </div>
-  <div style="float: left;">
-    <form action="/logout" method="post">
-      <button type="submit" class="btn btn-primary">Logout</button>
-    </form>
-  </div>
-</div>
-<br/>
-<div>
-  <section role="main">
-    {% block body %}{% endblock %}
-  </section>
-</div>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock %} - Swig Tiny-CMS Example</title>
 
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+<body>
+<div class="container">
+  <div class="masthead">
+    <h3 class="text-muted">Swig Tiny-CMS Example</h3>
+    <div style="margin-bottom: 30px;">
+      <div style="float: left;margin-right: 10px">
+        <form action="/login" method="post">
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      </div>
+      <div style="float: left;">
+        <form action="/logout" method="post">
+          <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+      </div>
+    </div>
+    <br/>
+  </div>
+
+  <div class="jumbotron">
+    {% block jumbotron %}{% endblock %}
+  </div>
+
+  {% block body %}{% endblock %}
+
+  <!-- Site footer -->
+  <div class="footer">
+    <p>&copy; Jakub Borys 2014</p>
+  </div>
+
+
+
+</div> <!-- /container -->
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<!-- highlight.js for Mardown code highlighting. More on: http://highlightjs.org/ -->
+<script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+<!-- Initialize highlight.js -->
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>
