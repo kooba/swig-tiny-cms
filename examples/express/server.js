@@ -42,7 +42,11 @@ var options = {
  */
 
 app.use(function (req, res, next) {
-  swigCms.canEditContent(req.session && req.session.isAuthenticated);
+  if(req.user && req.user.roles.indexOf('Admin') > -1) {
+    swigCms.canEditContent(true);
+  } else {
+    swigCms.canEditContent(false);
+  }
   next();
 });
 
@@ -60,14 +64,13 @@ app.get('/', function (req, res) {
   res.render('index', {});
 });
 
-app.post('/login', passport.authenticate('local', {failureRedirect: '/', failureFlash: false}),
+app.post('/login', passport.authenticate('local', { failureRedirect: '/', failureFlash: false }),
   function (req, res) {
-  req.session.isAuthenticated = true;
   res.redirect('/');
 });
 
 app.post('/logout', function (req, res) {
-  req.session.isAuthenticated = false;
+  req.logout();
   res.redirect('/');
 });
 
