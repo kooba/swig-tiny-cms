@@ -8,12 +8,19 @@ var swig = require('swig');
 var path = require('path');
 var swigCms = require('../../index.js');
 var fs = require('fs');
+var passport = require('passport');
+
 
 app.use(favicon(__dirname + '/public/img/favicon.png'));
 app.use(cookies());
 app.use(bodyParser());
 app.use(session({ secret: 'keyboard cat' }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+//Configure Passport
+require('./config/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
 
 /**
  * Swig Setup
@@ -53,7 +60,8 @@ app.get('/', function (req, res) {
   res.render('index', {});
 });
 
-app.post('/login', function (req, res) {
+app.post('/login', passport.authenticate('local', {failureRedirect: '/', failureFlash: false}),
+  function (req, res) {
   req.session.isAuthenticated = true;
   res.redirect('/');
 });
