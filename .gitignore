@@ -4,5 +4,5 @@ node_modules/*
 .idea
 examples/express/public/components/*
 examples/express/node_modules/*
-examples/express/content/*
+examples/express/content/*.md
 coverage
