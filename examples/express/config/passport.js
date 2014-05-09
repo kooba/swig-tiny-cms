@@ -1,7 +1,7 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User =  { id: '1234567', roles: ['Admin'], email: 'admin@admin.com' };
 
-module.exports = function (passport) {
+module.exports = function (passport, app) {
 
   passport.serializeUser(function(user, done) {
     done(null, user.id)
@@ -24,4 +24,7 @@ module.exports = function (passport) {
           return done(null, false, { message: 'Unknown user' });
     }
   ));
+
+  app.use(passport.initialize());
+  app.use(passport.session());
 };

@@ -22,6 +22,13 @@
   <div class="masthead">
     <h3 class="text-muted">Swig Tiny-CMS Example</h3>
     <div style="margin-bottom: 30px;">
+      {% if req.isAuthenticated() %}
+      <div style="float: left;">
+        <form action="/logout" method="post">
+          <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+      </div>
+      {% else %}
       <div style="float: left;margin-right: 10px">
         <form action="/login" method="post">
           <input type="hidden" name="email" value="admin@admin.com" />
@@ -29,11 +36,7 @@
           <button type="submit" class="btn btn-primary">Login</button>
         </form>
       </div>
-      <div style="float: left;">
-        <form action="/logout" method="post">
-          <button type="submit" class="btn btn-primary">Logout</button>
-        </form>
-      </div>
+      {% endif %}
     </div>
     <br/>
   </div>

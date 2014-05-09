@@ -82,7 +82,7 @@ describe('', function() {
     describe('content will be', function () {
       canEditContent = false;
       it('blank if new', function (done) {
-        swig.render("{% cms 'test' %}").should.equal('');
+        swig.render("{% cms 'test' %}").should.equal('<p><br/></p>\n');
         done();
       });
 
@@ -122,7 +122,7 @@ describe('', function() {
           .get('/')
           .expect(200)
           .end(function (err, res) {
-            res.text.should.equal("<div class='swig-cms-div'><div class='swig-cms-edit'><div class='swig-cms-edit-inner'><a class='button grow' href='/swig-cms/edit/" + contentName + "?returnUrl=/'>Edit</a></div></div></div>");
+            res.text.should.equal("<div class='swig-cms-div'><div class='swig-cms-edit'><div class='swig-cms-edit-inner'><a class='button grow' href='/swig-cms/edit/" + contentName + "?returnUrl=/'>Edit</a></div></div><p><br/></p>\n</div>");
             done();
           });
       });
