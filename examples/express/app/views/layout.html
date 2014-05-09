@@ -9,6 +9,7 @@
   <!-- Bootstrap -->
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.1.1-1/css/simplex/bootstrap.min.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -18,41 +19,59 @@
 
 </head>
 <body>
-<div class="container">
-  <div class="masthead">
-    <h3 class="text-muted">Swig Tiny-CMS Example</h3>
-    <div style="margin-bottom: 30px;">
-      {% if req.isAuthenticated() %}
-      <div style="float: left;">
-        <form action="/logout" method="post">
-          <button type="submit" class="btn btn-primary">Logout</button>
-        </form>
-      </div>
-      {% else %}
-      <div style="float: left;margin-right: 10px">
-        <form action="/login" method="post">
-          <input type="hidden" name="email" value="admin@admin.com" />
-          <input type="hidden" name="password" value="password" />
-          <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-      </div>
-      {% endif %}
+<div class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="../" class="navbar-brand">Swig Tiny-CMS Example</a>
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
     </div>
-    <br/>
+    <div class="navbar-collapse collapse" id="navbar-main">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="https://github.com/kooba/swig-tiny-cms">GitHub</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right" style="margin-top: 10px">
+        {% if req.isAuthenticated() %}
+        <li>
+          <span style="padding: 0 10px 0 10px;">Hello {{ req.user.name  }}!</span>
+        </li>
+        <li>
+            <form action="/logout" method="post">
+              <button type="submit" class="btn btn-info btn-xs">Logout</button>
+            </form>
+        </li>
+        {% else %}
+        <li>
+          <span style="padding: 0 10px 0 10px;">Please login to edit content -> </span>
+        </li>
+        <li>
+          <form action="/login" method="post">
+            <input type="hidden" name="email" value="admin@admin.com" />
+            <input type="hidden" name="password" value="password" />
+            <button type="submit" class="btn btn-info btn-xs">Login</button>
+          </form>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
   </div>
+</div>
+<div class="container">
 
   <div class="jumbotron">
     {% block jumbotron %}{% endblock %}
   </div>
-
   {% block body %}{% endblock %}
 
   <!-- Site footer -->
   <div class="footer">
     <p>&copy; Jakub Borys 2014</p>
   </div>
-
-
 
 </div> <!-- /container -->
 

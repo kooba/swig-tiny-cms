@@ -1,5 +1,5 @@
 var LocalStrategy = require('passport-local').Strategy;
-var User =  { id: '1234567', roles: ['Admin'], email: 'admin@admin.com' };
+var User =  { id: '1234567', roles: ['Admin'], email: 'admin@admin.com', name: 'Joe Smith' };
 
 module.exports = function (passport, app) {
 
