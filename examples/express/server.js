@@ -24,7 +24,7 @@ require('./config/passport')(passport, app);
 /**
  * Add request to every response.
  * This is helpful in many situations.
- * E.g. checking passport's req.isAuthenticated() in the view.
+ * E.g. using passport's req.isAuthenticated() in the view.
  */
 app.use(function(req, res, next){
   res.locals.req = req;
@@ -37,6 +37,11 @@ app.use(function(req, res, next){
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/app/views');
+
+
+/**
+ * Swig Tiny-CMS Setup
+ */
 
 /**
  * Provide a way for Swig Tiny-CMS to know when user is authorized to edit content.
@@ -62,6 +67,11 @@ var options = {
  * Initialize Swig CMS
  */
 swigCms.initialize(swig, app, options);
+
+
+/**
+ * Swig Tiny-CMS Setup End
+ */
 
 /**
  * Sample app routes

@@ -47,7 +47,7 @@
         </li>
         {% else %}
         <li>
-          <span style="padding: 0 10px 0 10px;">Please login to edit content -> </span>
+          <span style="padding: 0 10px 0 10px;">Please login to edit content <span class="glyphicon glyphicon-chevron-right"></span> </span>
         </li>
         <li>
           <form action="/login" method="post">
@@ -63,7 +63,7 @@
 </div>
 <div class="container">
 
-  <div class="jumbotron">
+  <div class="jumbotron" style="background: linear-gradient(#f4d963, #ffffff)">
     {% block jumbotron %}{% endblock %}
   </div>
   {% block body %}{% endblock %}
