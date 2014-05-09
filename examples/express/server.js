@@ -1,3 +1,5 @@
+var fs = require('fs');
+var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
 var favicon = require('serve-favicon');
@@ -7,8 +9,6 @@ var app = express();
 var swig = require('swig');
 var swigCms = require('../../index.js');
 var passport = require('passport');
-var path = require('path');
-
 
 app.use(favicon(__dirname + '/public/img/favicon.png'));
 app.use(cookies());
@@ -26,7 +26,7 @@ require('./config/passport')(passport, app);
  * This is helpful in many situations.
  * E.g. using passport's req.isAuthenticated() in the view.
  */
-app.use(function(req, res, next){
+app.use(function (req, res, next) {
   res.locals.req = req;
   next();
 });
@@ -48,7 +48,7 @@ app.set('views', __dirname + '/app/views');
  * Here 'user' is set on a request by passport
  */
 app.use(function (req, res, next) {
-  if(req.user && req.user.roles.indexOf('Admin') > -1) {
+  if (req.user && req.user.roles.indexOf('Admin') > -1) {
     swigCms.canEditContent(true);
   } else {
     swigCms.canEditContent(false);
@@ -60,7 +60,17 @@ app.use(function (req, res, next) {
  * Set Swig Tiny-CMS options.
  */
 var options = {
-  contentDirectory:  __dirname + '/content/'
+
+  //content directory is required.
+  contentDirectory: __dirname + '/content/',
+
+  //optionally pass list of css files that should be used in editor.
+  //this will allow you to match editor preview with your site.
+  css: ['//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.1.1-1/css/simplex/bootstrap.min.css'],
+
+  //optionally set marked render engine options. More info https://github.com/chjj/marked
+  markedOptions: { breaks: true }
+
 };
 
 /**
@@ -82,13 +92,32 @@ app.get('/', function (req, res) {
 
 app.post('/login', passport.authenticate('local', { failureRedirect: '/', failureFlash: false }),
   function (req, res) {
-  res.redirect('/');
-});
+    res.redirect('/');
+  });
 
 app.post('/logout', function (req, res) {
   req.logout();
   res.redirect('/');
 });
 
+app.get('/refresh', function (req, res) {
+  refreshFiles();
+  res.redirect('/');
+});
+
 app.listen(1337);
 console.log('Application Started on http://localhost:1337/');
+
+var refreshFiles = function () {
+  var contentDir = path.resolve(__dirname, 'content');
+  var contentTemplates = fs.readdirSync(contentDir);
+  contentTemplates.forEach(function (value) {
+    fs.createReadStream(path.resolve(contentDir, value))
+      .pipe(fs.createWriteStream(path.resolve(contentDir, value.replace('.tmpl', ''))));
+  });
+};
+
+//Refresh site content every 10 minutes.
+setInterval(function () {
+  refreshFiles();
+}, 600000);

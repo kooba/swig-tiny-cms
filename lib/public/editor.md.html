@@ -8,6 +8,12 @@
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.2.1/css/bootstrap-markdown.min.css">
   <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css">
 
+  {% if options.css && options.css.length > 0 %}
+  {% for style in options.css %}
+  <link rel="stylesheet" href="{{ style }}">
+  {% endfor %}
+  {% endif %}
+
   <style>
     body {
       padding: 10px 10px 10px 10px;
@@ -41,7 +47,7 @@
 <body>
 <div>
   <div class="tinycms-editor-container">
-    <form action="/{{ swigCmsRoute }}/save/" method="post" id="mainForm">
+    <form action="/{{ options.route }}/save/" method="post" id="mainForm">
       <div>
         <input type="hidden" name="contentId" value="{{ contentId }}"/>
         <input type="hidden" name="returnUrl" value="{{ returnUrl }}"/>
@@ -58,6 +64,10 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.2.1/js/bootstrap-markdown.min.js"></script>
 <script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
 <script>
+
+  {% if options.markedOptions %}
+    marked.setOptions({{ options.markedOptions|json|safe }});
+  {% endif %}
 
   var editor = function (input, preview) {
     preview.html(marked(input.val()));

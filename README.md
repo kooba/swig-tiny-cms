@@ -3,9 +3,7 @@
 Adds basic content management capability to your existing Express.js + Swig applications.
 
 TODO:
-- Support passing marked parameters (pass them down to editor page)
 - Setup Demo Page
-- Allow to pass custom CSS to use in editor: Array of CSS files ex. Bootstrap + Markdown highlighter.
 - Explain default highlighter CSS used.
 
 ##Overview
