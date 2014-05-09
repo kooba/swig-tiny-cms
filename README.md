@@ -3,12 +3,10 @@
 Adds basic content management capability to your existing Express.js + Swig applications.
 
 TODO:
-- Show req.isAdmin() usage with passport
 - Support passing marked parameters (pass them down to editor page)
 - Setup Demo Page
 - Allow to pass custom CSS to use in editor: Array of CSS files ex. Bootstrap + Markdown highlighter.
 - Explain default highlighter CSS used.
-- When new (empty) content sections are added they are invisible.
 
 ##Overview
 
