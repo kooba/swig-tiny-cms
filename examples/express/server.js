@@ -65,7 +65,7 @@ var options = {
   contentDirectory: __dirname + '/content/',
 
   //optionally pass list of css files that should be used in editor.
-  //this will allow you to match editor preview with your site.
+  //this will allow you to match editor's preview with your site's rendering.
   css: ['//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.1.1-1/css/simplex/bootstrap.min.css'],
 
   //optionally set marked render engine options. More info https://github.com/chjj/marked
