@@ -9,6 +9,7 @@ var app = express();
 var swig = require('swig');
 var swigCms = require('../../index.js');
 var passport = require('passport');
+var port = process.env.PORT || 1337;
 
 app.use(favicon(__dirname + '/public/img/favicon.png'));
 app.use(cookies());
@@ -105,8 +106,9 @@ app.get('/refresh', function (req, res) {
   res.redirect('/');
 });
 
-app.listen(1337);
-console.log('Application Started on http://localhost:1337/');
+app.listen(port);
+
+console.log('Application Started');
 
 var refreshFiles = function () {
   var contentDir = path.resolve(__dirname, 'content');
