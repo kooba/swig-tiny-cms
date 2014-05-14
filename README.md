@@ -11,7 +11,7 @@ Adds basic content management capability to your existing Express.js + Swig appl
 
 ##Usage
 
-New tag 'cms' will be registered with your Swig template engine. It requires contentId as a string:
+New tag 'cms' will be registered with your Swig template engine. ContentId string as a parameter is required:
 
 ```swig
 {% cms 'contentId' %}
@@ -21,7 +21,7 @@ After adding this tag, editable content section will be available to your author
 
 Content will be saved in a file with contentId.md name.
 
-The same content identifiers can be used if you would like to reuse them.
+The same content identifiers can be used if you would like to reuse content sections.
 
 ##Demo
 
@@ -47,13 +47,13 @@ app.use(function(req, res, next){
   swigCms.isAdmin(req.isAuthenticated());
   next();
 });
-````
+```
 
 Provide bower component root folder within swig-cms options:
 
 ```js
 var options = {
-  //content directory is required.
+  //content directory is required. Should be a shared location when used in a clustered environment.
   contentDirectory: __dirname + '/content/',
 
   //optionally pass list of css files that should be used in editor.
@@ -69,7 +69,7 @@ Initialize Swig CMS
 
 ```js
 swigCms.initialize(swig, app, options);
-````
+```
 
 
 ##Test & Run
