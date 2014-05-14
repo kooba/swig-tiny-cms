@@ -1,5 +1,29 @@
-#Start
+##Overview
 
-Just add ``` {% cms 'contentId' %} ``` to your Swig based templates
-> Simple conifuration  
-> Is straight forward
+Sometimes, when you're done with your new and shiny [Swig](http://paularmstrong.github.io/swig/) based app, your client wants to be able to edit some content without paying you big buck$ to do it.
+
+> Simply sprinkle your Swig templates with ```{% cms 'my-content' %} ``` sections and you're done!
+
+##Features
+
+Besides super easy and unobtrusive configuration Swig Tiny-CMS offers:
+
+- Support for Markdown content sections.
+- File-based persistence.
+- Works with Express 3.x and 4.x
+- Works on Node.js clusters.
+- WYSIWYG Markdown editor.
+
+##Usage
+
+New tag 'cms' will be registered with your Swig template engine. ContentId string as a parameter is required:
+
+```swig
+{% cms 'contentId' %}
+```
+
+After adding this tag, editable content section will be available to your authorized users.
+
+Content will be saved in a file with contentId.md name.
+
+The same content identifiers can be used if you would like to reuse content sections.
