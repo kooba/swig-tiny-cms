@@ -170,7 +170,7 @@ var refreshContent = function (callback) {
  */
 refreshContent(function (err) {
   if (err) {
-    console.log(err);
+    console.log('Error during initial content refres: ' + err);
   } else {
     app.listen(port);
     console.log('Application Started');
