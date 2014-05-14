@@ -143,7 +143,7 @@ var refreshContent = function (callback) {
   var contentTemplates = fs.readdirSync(contentTemplatesDir);
   var templatesCount = contentTemplates.length;
 
-  if (!fs.existsSync(contentDir)) {
+  if (!fs.existsSync(options.contentDirectory)) {
     require('mkdirp').sync(options.contentDirectory);
   }
 
