@@ -15,6 +15,8 @@ var swigCms;
  * Use NPM module in production
  * otherwise use local instance module for development.
  */
+console.log(process.env.NODE_ENV);
+
 if(process.env.NODE_ENV === 'production') {
   swigCms = require('swig-tiny-cms');
 } else {
