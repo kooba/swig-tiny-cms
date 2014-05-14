@@ -7,7 +7,7 @@ var cookies = require('cookie-parser');
 var session = require('express-session');
 var app = express();
 var swig = require('swig');
-var swigCms = require('../../index.js');
+var swigCms = require('swig-tiny-cms');
 var passport = require('passport');
 var port = process.env.PORT || 1337;
 

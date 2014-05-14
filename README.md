@@ -33,12 +33,6 @@ Checkout demo [swig-tiny-cms.herokuapp.com](http://swig-tiny-cms.herokuapp.com)
 npm install swig-cms --save
 ```
 
-Marked is used on the client side for live preview.
-
-```sh
-bower install marked --save
-```
-
 ##Configuration
 
 Require Swig CMS
