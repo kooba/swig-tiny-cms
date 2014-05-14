@@ -16,6 +16,8 @@ app.use(cookies());
 app.use(bodyParser());
 app.use(session({ secret: 'keyboard cat' }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.locals.googleAnalytics = process.env.GOOGLE_ANALYTICS || false;
+
 
 /**
  * Configure Passport
