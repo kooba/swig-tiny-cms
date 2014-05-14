@@ -2,16 +2,30 @@
 
 Adds basic content management capability to your existing Express.js + Swig applications.
 
-TODO:
-- Setup Demo Page
-- Explain default highlighter CSS used.
-
 ##Overview
 
 - Support for Markdown content sections.
 - File-based persistence.
 - Works with Express 3.x and 4.x
 - Works on Node.js clusters.
+
+##Usage
+
+New tag 'cms' will be registered with your Swig template engine. It requires contentId as a string:
+
+```swig
+{% cms 'contentId' %}
+```
+
+After adding this tag, editable content section will be available to your authorized users.
+
+Content will be saved in a file with contentId.md name.
+
+The same content identifiers can be used if you would like to reuse them.
+
+##Demo
+
+Checkout demo [swig-tiny-cms.herokuapp.com](http://swig-tiny-cms.herokuapp.com)
 
 ##Installation
 
@@ -45,7 +59,15 @@ Provide bower component root folder within swig-cms options:
 
 ```js
 var options = {
-  bowerComponentsPath: '/components'
+  //content directory is required.
+  contentDirectory: __dirname + '/content/',
+
+  //optionally pass list of css files that should be used in editor.
+  //this will allow you to match editor's preview with your site's rendering.
+  css: ['//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.1.1-1/css/simplex/bootstrap.min.css'],
+
+  //optionally set marked render engine options. More info https://github.com/chjj/marked
+  markedOptions: { breaks: true }
 };
 ```
 
@@ -55,19 +77,6 @@ Initialize Swig CMS
 swigCms.initialize(swig, app, options);
 ````
 
-##Usage
-
-New tag 'cms' will be registered with your Swig template engine. It requires contentId as a string:
-
-```swig
-{% cms 'contentId' %}
-```
-
-After adding this tag, editable content section will be available to your authorized users.
-
-Content will be saved in a file with contentId.md name.
-
-The same content identifiers can be used if you would like to reuse them.
 
 ##Test
 
