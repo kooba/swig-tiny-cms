@@ -13,10 +13,8 @@ var swigCms;
 
 /**
  * Use NPM module in production
- * otherwise use local instance module for development.
+ * otherwise use local instance of the module for development.
  */
-console.log(process.env.NODE_ENV);
-
 if(process.env.NODE_ENV === 'production') {
   swigCms = require('swig-tiny-cms');
 } else {
@@ -146,8 +144,6 @@ var refreshContent = function (callback) {
   if (!fs.existsSync(options.contentDirectory)) {
     require('mkdirp').sync(options.contentDirectory);
   }
-
-  console.log(options.contentDirectory);
 
   contentTemplates.forEach(function (value) {
 
