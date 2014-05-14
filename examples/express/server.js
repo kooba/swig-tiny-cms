@@ -140,18 +140,19 @@ app.get('/refresh', function (req, res, next) {
 var refreshContent = function (callback) {
 
   var contentTemplatesDir = path.resolve(__dirname, 'contentTmpl');
-  var contentDir = path.resolve(__dirname, 'content');
   var contentTemplates = fs.readdirSync(contentTemplatesDir);
   var templatesCount = contentTemplates.length;
 
   if (!fs.existsSync(contentDir)) {
-    require('mkdirp').sync(contentDir);
+    require('mkdirp').sync(options.contentDirectory);
   }
+
+  console.log(options.contentDirectory);
 
   contentTemplates.forEach(function (value) {
 
     var reader = fs.createReadStream(path.resolve(contentTemplatesDir, value));
-    var writer = fs.createWriteStream(path.resolve(contentDir, value.replace('.tmpl', '')));
+    var writer = fs.createWriteStream(path.resolve(options.contentDirectory, value.replace('.tmpl', '')));
 
     reader.pipe(writer);
 
