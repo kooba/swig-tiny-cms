@@ -144,6 +144,10 @@ var refreshContent = function (callback) {
   var contentTemplates = fs.readdirSync(contentTemplatesDir);
   var templatesCount = contentTemplates.length;
 
+  if (!fs.existsSync(contentDir)) {
+    require('mkdirp').sync(contentDir);
+  }
+
   contentTemplates.forEach(function (value) {
 
     var reader = fs.createReadStream(path.resolve(contentTemplatesDir, value));

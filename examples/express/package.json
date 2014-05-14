@@ -17,6 +17,7 @@
     "cookie-parser": "^1.0.1",
     "express-session": "^1.0.4",
     "passport": "^0.2.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "mkdirp": "^0.3.5"
   }
 }
