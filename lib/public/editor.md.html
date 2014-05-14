@@ -16,19 +16,19 @@
 
   <style>
     body {
-      padding: 10px 10px 10px 10px;
-      height: 100%;
+      background-color: #ffffff;
     }
 
-    .tinycms-editor-container .btn-toolbar {
-      margin-left: 0;
+    /* Overriding default Bootstrap Markdown styles  */
+
+    .md-editor, .md-header, .md-input, .md-editor > textarea, .md-editor.active  {
+      border: none;
+      background-color: #ffffff;
+      box-shadow: none;
     }
 
-    .tinycms-editor-container {
-      width: 50%;
-      float: left;
-      background-color: red;
-      height: 100%;
+    .md-editor > textarea {
+      border-top: darkgray solid 1px;
     }
 
     .tinycms-editor {
@@ -36,26 +36,44 @@
     }
 
     .tinycms-preview {
-      width: 50%;
-      float: left;
       padding: 20px 10px 10px 10px;
+    }
+
+    .tinycms-preview-header {
+      border-bottom: darkgray solid 1px;
+    }
+
+    .tinycms-preview-header h4 {
+      height: 22px;
+      color: #a4b3b3;
     }
 
   </style>
 
 </head>
 <body>
-<div>
-  <div class="tinycms-editor-container">
-    <form action="/{{ options.route }}/save/" method="post" id="mainForm">
-      <div>
-        <input type="hidden" name="contentId" value="{{ contentId }}"/>
-        <input type="hidden" name="returnUrl" value="{{ returnUrl }}"/>
-        <textarea class="form-control tinycms-editor" style="padding: 10px;" rows="40" name="content" id="content">{{ content }}</textarea>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6" style="border-right: darkgray solid 1px;">
+      <div class="row">
+        <form action="/{{ options.route }}/save/" method="post" id="mainForm">
+          <input type="hidden" name="contentId" value="{{ contentId }}"/>
+          <input type="hidden" name="returnUrl" value="{{ returnUrl }}"/>
+          <textarea class="form-control tinycms-editor col-sm-12" style="padding: 10px;" rows="40" name="content" id="content">{{ content }}</textarea>
+        </form>
       </div>
-    </form>
+    </div>
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-12 tinycms-preview-header">
+          <h4>LIVE PREVIEW</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div id="preview" class="tinycms-preview col-sm-12"></div>
+      </div>
+    </div>
   </div>
-  <div id="preview" class="tinycms-preview"></div>
 </div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
@@ -82,19 +100,40 @@
 
     content.markdown({
       additionalButtons: [
-        [{
-          name: "groupCustom",
-          data: [{
-            name: "cmdSave",
-            toggle: true,
-            title: "Save",
-            btnText: 'Save',
-            btnClass: 'btn btn-primary btn-sm',
-            callback: function(e){
-              $('#mainForm').submit();
-            }
-          }]
-        }]
+        [
+          {
+            name: "cancelGroup",
+            data: [
+              {
+                name: "cmdCancel",
+                toggle: true,
+                title: "Cancel",
+                btnText: 'Cancel',
+                btnClass: 'btn btn-warning btn-sm',
+                callback: function () {
+                  parent.history.back();
+                }
+              }
+            ]
+          }
+        ],
+        [
+          {
+            name: "groupCustom",
+            data: [
+              {
+                name: "cmdSave",
+                toggle: true,
+                title: "Save",
+                btnText: 'Save',
+                btnClass: 'btn btn-primary btn-sm',
+                callback: function () {
+                  $('#mainForm').submit();
+                }
+              }
+            ]
+          }
+        ]
       ]
     });
 
@@ -105,6 +144,8 @@
     });
 
     editor(content,preview);
+
+    $("#content").height( $("#content")[0].scrollHeight );
 
   });
 </script>

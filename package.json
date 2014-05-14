@@ -1,6 +1,6 @@
 {
   "name": "swig-tiny-cms",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Adds basic content management capability to your existing Express.js + Swig applications.",
   "main": "index",
   "scripts": {

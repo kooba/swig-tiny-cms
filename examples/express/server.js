@@ -7,15 +7,32 @@ var cookies = require('cookie-parser');
 var session = require('express-session');
 var app = express();
 var swig = require('swig');
-var swigCms = require('swig-tiny-cms');
 var passport = require('passport');
 var port = process.env.PORT || 1337;
+var swigCms;
 
+/**
+ * Use NPM module in production
+ * otherwise use local instance module for development.
+ */
+if(process.env.NODE_ENV === 'production') {
+  swigCms = require('swig-tiny-cms');
+} else {
+  swigCms = require('../../index.js');
+}
+
+/**
+ * Express setup
+ */
 app.use(favicon(__dirname + '/public/img/favicon.png'));
 app.use(cookies());
 app.use(bodyParser());
 app.use(session({ secret: 'keyboard cat' }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+/**
+ * Enable Google Analytics if Tracking ID provided.
+ */
 app.locals.googleAnalytics = process.env.GOOGLE_ANALYTICS || false;
 
 
@@ -64,14 +81,15 @@ app.use(function (req, res, next) {
  */
 var options = {
 
-  //content directory is required.
+  //content directory is required
+  //should be shared directory when used in cluster
   contentDirectory: __dirname + '/content/',
 
-  //optionally pass list of css files that should be used in editor.
-  //this will allow you to match editor's preview with your site's rendering.
+  //optional array of custom CSS files to be used in editor
   css: ['//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.1.1-1/css/simplex/bootstrap.min.css'],
 
-  //optionally set marked render engine options. More info https://github.com/chjj/marked
+  //optional marked.js options
+  //more info: https://github.com/chjj/marked
   markedOptions: { breaks: true }
 
 };
@@ -103,25 +121,67 @@ app.post('/logout', function (req, res) {
   res.redirect('/');
 });
 
-app.get('/refresh', function (req, res) {
-  refreshFiles();
-  res.redirect('/');
+app.get('/refresh', function (req, res, next) {
+  refreshContent(function (err) {
+    if (err) {
+      next(err);
+    } else {
+      res.redirect('/');
+    }
+  });
 });
 
-app.listen(port);
+/**
+ * Allows to refresh content used for Demo
+ * @param callback
+ */
+var refreshContent = function (callback) {
 
-console.log('Application Started');
-
-var refreshFiles = function () {
+  var contentTemplatesDir = path.resolve(__dirname, 'contentTmpl');
   var contentDir = path.resolve(__dirname, 'content');
-  var contentTemplates = fs.readdirSync(contentDir);
+  var contentTemplates = fs.readdirSync(contentTemplatesDir);
+  var templatesCount = contentTemplates.length;
+
   contentTemplates.forEach(function (value) {
-    fs.createReadStream(path.resolve(contentDir, value))
-      .pipe(fs.createWriteStream(path.resolve(contentDir, value.replace('.tmpl', ''))));
+
+    var reader = fs.createReadStream(path.resolve(contentTemplatesDir, value));
+    var writer = fs.createWriteStream(path.resolve(contentDir, value.replace('.tmpl', '')));
+
+    reader.pipe(writer);
+
+    writer.on('finish', function () {
+      templatesCount--;
+      if (templatesCount === 0) {
+        callback(null);
+      }
+    });
+
+    writer.on('error', function (err) {
+      callback(err);
+    });
+
   });
 };
 
-//Refresh site content every 10 minutes.
+/**
+ * Refresh content on the app load.
+ */
+refreshContent(function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+    app.listen(port);
+    console.log('Application Started');
+  }
+});
+
+/**
+ * Refresh site content every 10 minutes.
+ */
 setInterval(function () {
-  refreshFiles();
+  refreshContent(function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 }, 600000);

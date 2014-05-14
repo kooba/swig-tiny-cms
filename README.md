@@ -8,6 +8,7 @@ Adds basic content management capability to your existing Express.js + Swig appl
 - File-based persistence.
 - Works with Express 3.x and 4.x
 - Works on Node.js clusters.
+- WYSIWYG Markdown editor with live preview.
 
 ##Usage
 
@@ -49,19 +50,22 @@ app.use(function(req, res, next){
 });
 ```
 
-Provide bower component root folder within swig-cms options:
+Declare Swig Tiny-CMS options:
 
 ```js
 var options = {
-  //content directory is required. Should be a shared location when used in a clustered environment.
+
+  //content directory is required
+  //should be shared directory when used in cluster
   contentDirectory: __dirname + '/content/',
 
-  //optionally pass list of css files that should be used in editor.
-  //this will allow you to match editor's preview with your site's rendering.
+  //optional array of custom CSS files to be used in editor
   css: ['//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.1.1-1/css/simplex/bootstrap.min.css'],
 
-  //optionally set marked render engine options. More info https://github.com/chjj/marked
+  //optional marked.js options
+  //more info: https://github.com/chjj/marked
   markedOptions: { breaks: true }
+
 };
 ```
 
