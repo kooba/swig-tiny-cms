@@ -78,7 +78,7 @@ swigCms.initialize(swig, app, options);
 
 ##Test & Run
 
-[Mocha](http://visionmedia.github.io/mocha/) and [gulp](http://gulpjs.com/) needs to be installed globally:
+[Mocha](http://mochajs.org/) and [gulp](http://gulpjs.com/) needs to be installed globally:
 
 ```sh
 $ npm install -g mocha gulp
